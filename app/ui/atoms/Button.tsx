@@ -64,7 +64,13 @@ export function Button({
   };
 
   return (
-    <TouchableOpacity style={[getButtonStyle(), style]} {...props}>
+    <TouchableOpacity 
+      style={[getButtonStyle(), style]} 
+      accessibilityRole="button"
+      accessibilityLabel={title}
+      accessibilityHint={`Tap to ${title.toLowerCase()}`}
+      {...props} 
+    >
       <Text 
         variant={size === 'sm' ? 'sm' : size === 'lg' ? 'lg' : 'md'}
         weight="medium"

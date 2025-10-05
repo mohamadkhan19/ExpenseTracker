@@ -27,6 +27,7 @@ export function Text({
         },
         style,
       ]}
+      accessibilityRole="text"
       {...props}
     />
   );

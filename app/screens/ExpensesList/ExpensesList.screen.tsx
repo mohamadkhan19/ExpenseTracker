@@ -168,6 +168,8 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
           keyExtractor={keyExtractor}
           contentContainerStyle={styles.list}
           showsVerticalScrollIndicator={false}
+          accessibilityRole="list"
+          accessibilityLabel="Expenses list"
           ListEmptyComponent={
             <EmptyState 
               title="No expenses found"

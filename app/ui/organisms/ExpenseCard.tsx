@@ -37,7 +37,14 @@ export function ExpenseCard({ expense, onPress, onLongPress }: ExpenseCardProps)
   const CardComponent = onPress ? TouchableOpacity : View;
 
   return (
-    <CardComponent style={cardStyle} onPress={onPress} onLongPress={onLongPress}>
+    <CardComponent 
+      style={cardStyle} 
+      onPress={onPress} 
+      onLongPress={onLongPress}
+      accessibilityRole="button"
+      accessibilityLabel={`Expense: ${expense.description}, ${formatAmount(expense.amount)}, ${formatCategory(expense.category)}, ${formatDate(expense.date)}`}
+      accessibilityHint={onPress ? "Tap to edit expense" : onLongPress ? "Long press to delete expense" : undefined}
+    >
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
         <View style={{ flex: 1 }}>
           <Text variant="lg" weight="semibold" color="text">

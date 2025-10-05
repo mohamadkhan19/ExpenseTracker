@@ -51,6 +51,9 @@ export function DatePicker({ value, onChange, placeholder = 'Select date', error
           minHeight: 48,
         }}
         onPress={() => setShowPicker(true)}
+        accessibilityRole="button"
+        accessibilityLabel={`Date picker: ${formatDisplayDate(value)}`}
+        accessibilityHint="Tap to select a date"
       >
         <Text
           variant="md"

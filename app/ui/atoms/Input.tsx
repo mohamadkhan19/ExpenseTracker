@@ -33,6 +33,9 @@ export function Input({ label, error, helperText, style, ...props }: InputProps)
       <TextInput 
         style={[inputStyle, style]} 
         placeholderTextColor={theme.colors.subtext} 
+        accessibilityLabel={label || 'Text input'}
+        accessibilityHint={error ? `Error: ${error}` : helperText || 'Enter text'}
+        accessibilityRole="text"
         {...props} 
       />
       {error && (

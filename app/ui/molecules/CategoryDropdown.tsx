@@ -44,6 +44,9 @@ export function CategoryDropdown({ selectedCategory, onCategorySelect }: Categor
         borderBottomColor: theme.colors.border,
       }}
       onPress={() => handleSelect(item)}
+      accessibilityRole="button"
+      accessibilityLabel={`Category: ${formatCategory(item)}`}
+      accessibilityHint={item === selectedCategory ? "Currently selected" : "Tap to select this category"}
     >
       <Text
         variant="md"
@@ -70,6 +73,9 @@ export function CategoryDropdown({ selectedCategory, onCategorySelect }: Categor
           alignItems: 'center',
         }}
         onPress={() => setIsOpen(true)}
+        accessibilityRole="button"
+        accessibilityLabel={`Category filter: ${formatCategory(selectedCategory)}`}
+        accessibilityHint="Tap to change category filter"
       >
         <Text variant="md" color="text">
           {formatCategory(selectedCategory)}
