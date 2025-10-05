@@ -43,9 +43,9 @@ export function DatePicker({ value, onChange, placeholder = 'Select date', error
         style={{
           borderWidth: 1,
           borderColor: error ? theme.colors.error : theme.colors.border,
-          borderRadius: theme.radii.md,
-          paddingHorizontal: theme.spacing.md,
-          paddingVertical: theme.spacing.sm,
+          borderRadius: theme.radii.lg,
+          paddingHorizontal: theme.spacing.lg,
+          paddingVertical: theme.spacing.md,
           backgroundColor: theme.colors.surface,
           justifyContent: 'center',
           minHeight: 48,

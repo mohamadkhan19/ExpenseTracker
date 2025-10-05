@@ -20,11 +20,12 @@ export function Button({
   
   const getButtonStyle = (): ViewStyle => {
       const baseStyle: ViewStyle = {
-        paddingHorizontal: theme.spacing[size === 'sm' ? 'md' : size === 'lg' ? 'xl' : 'lg'],
-        paddingVertical: theme.spacing[size === 'sm' ? 'sm' : size === 'lg' ? 'lg' : 'md'],
+        paddingHorizontal: theme.spacing[size === 'sm' ? 'lg' : size === 'lg' ? 'xxl' : 'xl'],
+        paddingVertical: theme.spacing[size === 'sm' ? 'md' : size === 'lg' ? 'xl' : 'lg'],
         borderRadius: theme.radii.lg,
         alignItems: 'center',
         justifyContent: 'center',
+        minHeight: 48, // Minimum touch target size
         elevation: 2,
         shadowColor: theme.colors.text,
         shadowOffset: {

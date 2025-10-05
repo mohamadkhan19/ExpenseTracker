@@ -15,12 +15,13 @@ export function Input({ label, error, helperText, style, ...props }: InputProps)
   const inputStyle: ViewStyle = {
     borderWidth: 1,
     borderColor: error ? theme.colors.error : theme.colors.border,
-    borderRadius: theme.radii.md,
-    paddingHorizontal: theme.spacing.md,
-    paddingVertical: theme.spacing.sm,
+    borderRadius: theme.radii.lg,
+    paddingHorizontal: theme.spacing.lg,
+    paddingVertical: theme.spacing.md,
     backgroundColor: theme.colors.surface,
     color: theme.colors.text,
     fontSize: theme.fontSizes.md,
+    minHeight: 48, // Minimum touch target size
   };
 
   return (

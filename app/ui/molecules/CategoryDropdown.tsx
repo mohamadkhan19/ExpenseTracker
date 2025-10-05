@@ -64,13 +64,14 @@ export function CategoryDropdown({ selectedCategory, onCategorySelect }: Categor
         style={{
           borderWidth: 1,
           borderColor: theme.colors.border,
-          borderRadius: theme.radii.md,
-          paddingHorizontal: theme.spacing.md,
-          paddingVertical: theme.spacing.sm,
+          borderRadius: theme.radii.lg,
+          paddingHorizontal: theme.spacing.lg,
+          paddingVertical: theme.spacing.md,
           backgroundColor: theme.colors.surface,
           flexDirection: 'row',
           justifyContent: 'space-between',
           alignItems: 'center',
+          minHeight: 48, // Minimum touch target size
         }}
         onPress={() => setIsOpen(true)}
         accessibilityRole="button"
