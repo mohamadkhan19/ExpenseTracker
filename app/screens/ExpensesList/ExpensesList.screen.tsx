@@ -27,7 +27,7 @@ interface ExpensesListScreenProps {
 }
 
 export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesListScreenProps) {
-  const theme = useTheme();
+  const { theme } = useTheme();
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [expenseToDelete, setExpenseToDelete] = useState<Expense | null>(null);
   const [developerScreenVisible, setDeveloperScreenVisible] = useState(false);

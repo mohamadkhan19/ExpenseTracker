@@ -15,7 +15,7 @@ export function Text({
   style,
   ...props 
 }: TextProps) {
-  const theme = useTheme();
+  const { theme } = useTheme();
   
   return (
     <RNText

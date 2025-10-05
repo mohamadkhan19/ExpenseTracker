@@ -12,7 +12,7 @@ interface ExpenseCardProps {
 }
 
 export function ExpenseCard({ expense, onPress, onLongPress }: ExpenseCardProps) {
-  const theme = useTheme();
+  const { theme } = useTheme();
   
   const cardStyle: ViewStyle = {
     backgroundColor: theme.colors.card,

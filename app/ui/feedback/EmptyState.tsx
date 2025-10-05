@@ -21,7 +21,7 @@ export function EmptyState({
   icon = '📝',
   variant = 'fullscreen'
 }: EmptyStateProps) {
-  const theme = useTheme();
+  const { theme } = useTheme();
   
   const containerStyle = variant === 'fullscreen' ? styles.fullscreen : styles.inline;
   

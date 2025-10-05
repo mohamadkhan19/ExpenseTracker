@@ -10,7 +10,7 @@ interface InputProps extends TextInputProps {
 }
 
 export function Input({ label, error, helperText, style, ...props }: InputProps) {
-  const theme = useTheme();
+  const { theme } = useTheme();
   
   const inputStyle: ViewStyle = {
     borderWidth: 1,

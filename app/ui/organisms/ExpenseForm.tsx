@@ -24,7 +24,7 @@ export function ExpenseForm({
   submitButtonTitle = 'Save Expense',
   isLoading = false,
 }: ExpenseFormProps) {
-  const theme = useTheme();
+  const { theme } = useTheme();
   
   const [formData, setFormData] = useState<FormData>({
     amount: initialData?.amount || '',

@@ -20,7 +20,7 @@ export function Button({
   onPress,
   ...props 
 }: ButtonProps) {
-  const theme = useTheme();
+  const { theme } = useTheme();
   
   const getButtonStyle = (): ViewStyle => {
       const baseStyle: ViewStyle = {

@@ -16,7 +16,7 @@ export function LoadingSpinner({
   message,
   overlay = false 
 }: LoadingSpinnerProps) {
-  const theme = useTheme();
+  const { theme } = useTheme();
   
   const containerStyle = overlay ? styles.overlay : styles.container;
   

@@ -19,7 +19,7 @@ export function ErrorState({
   icon = '⚠️',
   variant = 'fullscreen'
 }: ErrorStateProps) {
-  const theme = useTheme();
+  const { theme } = useTheme();
   
   const containerStyle = variant === 'fullscreen' ? styles.fullscreen : styles.inline;
   

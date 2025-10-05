@@ -14,7 +14,7 @@ interface DatePickerProps {
 }
 
 export function DatePicker({ value, onChange, placeholder = 'Select date', error }: DatePickerProps) {
-  const theme = useTheme();
+  const { theme } = useTheme();
   const [showPicker, setShowPicker] = useState(false);
   
   const selectedDate = value ? new Date(value) : new Date();

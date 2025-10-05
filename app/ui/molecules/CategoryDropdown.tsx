@@ -23,7 +23,7 @@ const categories: (ExpenseCategory | 'all')[] = [
 ];
 
 export function CategoryDropdown({ selectedCategory, onCategorySelect }: CategoryDropdownProps) {
-  const theme = useTheme();
+  const { theme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
 
   const formatCategory = (category: ExpenseCategory | 'all') => {
