@@ -6,9 +6,10 @@ import { Text } from './Text';
 interface InputProps extends TextInputProps {
   label?: string;
   error?: string;
+  helperText?: string;
 }
 
-export function Input({ label, error, style, ...props }: InputProps) {
+export function Input({ label, error, helperText, style, ...props }: InputProps) {
   const theme = useTheme();
   
   const inputStyle: ViewStyle = {
@@ -29,10 +30,19 @@ export function Input({ label, error, style, ...props }: InputProps) {
           {label}
         </Text>
       )}
-      <TextInput style={[inputStyle, style]} placeholderTextColor={theme.colors.subtext} {...props} />
+      <TextInput 
+        style={[inputStyle, style]} 
+        placeholderTextColor={theme.colors.subtext} 
+        {...props} 
+      />
       {error && (
         <Text variant="xs" color="error" style={{ marginTop: theme.spacing.xs }}>
           {error}
+        </Text>
+      )}
+      {helperText && !error && (
+        <Text variant="xs" color="subtext" style={{ marginTop: theme.spacing.xs }}>
+          {helperText}
         </Text>
       )}
     </View>
