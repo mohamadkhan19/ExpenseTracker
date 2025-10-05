@@ -12,6 +12,8 @@ import {
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
 import { ThemeProvider } from './app/theme/index';
+import { Provider } from 'react-redux';
+import { store } from './app/store';
 import AppNavigator from './app/navigation/AppNavigator';
 
 function App() {
@@ -19,10 +21,12 @@ function App() {
 
   return (
     <SafeAreaProvider>
-      <ThemeProvider>
-        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-        <AppNavigator />
-      </ThemeProvider>
+      <Provider store={store}>
+        <ThemeProvider>
+          <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+          <AppNavigator />
+        </ThemeProvider>
+      </Provider>
     </SafeAreaProvider>
   );
 }
