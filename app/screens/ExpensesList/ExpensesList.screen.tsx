@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { FlatList, View, StyleSheet } from 'react-native';
+import { FlatList, View, StyleSheet, ScrollView } from 'react-native';
 import { ScreenContainer } from '../../ui/primitives/ScreenContainer';
 import { ExpenseCard } from '../../ui/organisms/ExpenseCard';
 import { Text } from '../../ui/atoms/Text';
@@ -8,7 +8,7 @@ import { LoadingSpinner } from '../../ui/feedback/LoadingSpinner';
 import { EmptyState } from '../../ui/feedback/EmptyState';
 import { ErrorState } from '../../ui/feedback/ErrorState';
 import { useExpensesList } from './useExpensesList.hook';
-import { Expense } from '../../features/expenses/types';
+import { Expense, ExpenseCategory } from '../../features/expenses/types';
 import { useTheme } from '../../theme';
 
 const ExpenseItem = memo(({ expense }: { expense: Expense }) => (
@@ -76,18 +76,35 @@ export function ExpensesListScreen() {
           onPress={() => handleSortChange(sortBy === 'date-desc' ? 'date-asc' : 'date-desc')}
         />
         <Button
-          title={filterCategory === 'all' ? 'All Categories' : filterCategory}
-          variant="outline"
-          size="sm"
-          onPress={() => handleCategoryFilter('all')}
-        />
-        <Button
           title="Clear"
           variant="secondary"
           size="sm"
           onPress={clearFilters}
         />
       </View>
+
+      <ScrollView 
+        horizontal 
+        showsHorizontalScrollIndicator={false}
+        style={styles.categoryFilters}
+        contentContainerStyle={styles.categoryFiltersContent}
+      >
+        <Button
+          title="All"
+          variant={filterCategory === 'all' ? 'primary' : 'outline'}
+          size="sm"
+          onPress={() => handleCategoryFilter('all')}
+        />
+        {(['food', 'transport', 'entertainment', 'shopping', 'utilities', 'health', 'education', 'other'] as ExpenseCategory[]).map((category) => (
+          <Button
+            key={category}
+            title={category.charAt(0).toUpperCase() + category.slice(1)}
+            variant={filterCategory === category ? 'primary' : 'outline'}
+            size="sm"
+            onPress={() => handleCategoryFilter(category)}
+          />
+        ))}
+      </ScrollView>
 
       <FlatList
         data={expenses}
@@ -119,6 +136,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: 16,
     paddingVertical: 12,
+    gap: 8,
+  },
+  categoryFilters: {
+    paddingVertical: 8,
+  },
+  categoryFiltersContent: {
+    paddingHorizontal: 16,
     gap: 8,
   },
   list: {
