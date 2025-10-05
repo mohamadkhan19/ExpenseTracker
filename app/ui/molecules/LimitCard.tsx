@@ -3,7 +3,7 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useTheme } from '../../theme';
 import { Text } from '../atoms/Text';
 import { Button } from '../atoms/Button';
-import { ProgressBar } from './ProgressBar';
+import { ProgressBar } from '../charts/ProgressBar';
 import { SpendingLimit, LimitStatus } from '../../features/limits/types';
 import { formatLimitAmount, formatLimitPeriod } from '../../features/limits/utils';
 
