@@ -126,7 +126,7 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
   if (isLoading) {
     return (
       <ScreenContainer>
-        <LoadingSpinner />
+        <LoadingSpinner message="Loading expenses..." />
       </ScreenContainer>
     );
   }
@@ -138,6 +138,7 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
           title="Error loading expenses"
           message="Unable to load your expenses. Please try again."
           onRetry={handleRetry}
+          icon="📱"
         />
       </ScreenContainer>
     );
@@ -200,6 +201,8 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
             <EmptyState 
               title="No expenses found"
               subtitle="Add your first expense to get started"
+              icon="💰"
+              variant="inline"
             />
           }
         />
