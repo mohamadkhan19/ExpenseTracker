@@ -16,7 +16,7 @@ import {
   generateLimitSuggestions,
   validateLimit,
   calculateLimitAnalytics
-} from '../limits/utils';
+} from '../utils';
 
 export function useSpendingLimits() {
   const { data: expenses = [], isLoading: expensesLoading } = useGetExpensesQuery();

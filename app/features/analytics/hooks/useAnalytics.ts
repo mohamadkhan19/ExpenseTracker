@@ -11,7 +11,7 @@ import {
   calculateAnalyticsCalculations,
   filterExpensesByAnalyticsFilters,
   generateTimeRange 
-} from '../analytics/utils';
+} from '../utils';
 
 export function useAnalytics() {
   const { data: allExpenses = [], isLoading, error } = useGetExpensesQuery();
