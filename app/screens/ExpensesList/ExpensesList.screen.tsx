@@ -12,13 +12,18 @@ import { useExpensesList } from './useExpensesList.hook';
 import { Expense, ExpenseCategory } from '../../features/expenses/types';
 import { useTheme } from '../../theme';
 
-const ExpenseItem = memo(({ expense }: { expense: Expense }) => (
-  <ExpenseCard expense={expense} />
+const ExpenseItem = memo(({ expense, onPress }: { expense: Expense; onPress?: () => void }) => (
+  <ExpenseCard expense={expense} onPress={onPress} />
 ));
 
 ExpenseItem.displayName = 'ExpenseItem';
 
-export function ExpensesListScreen() {
+interface ExpensesListScreenProps {
+  onAddExpense?: () => void;
+  onEditExpense?: (expenseId: string) => void;
+}
+
+export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesListScreenProps) {
   const theme = useTheme();
   const {
     expenses,
@@ -33,8 +38,11 @@ export function ExpensesListScreen() {
   } = useExpensesList();
 
   const renderExpense = useCallback(({ item }: { item: Expense }) => (
-    <ExpenseItem expense={item} />
-  ), []);
+    <ExpenseItem 
+      expense={item} 
+      onPress={() => handleEditExpense(item.id)}
+    />
+  ), [handleEditExpense]);
 
   const keyExtractor = useCallback((item: Expense) => item.id, []);
 
@@ -48,8 +56,20 @@ export function ExpensesListScreen() {
   }, []);
 
   const handleAddExpense = useCallback(() => {
-    console.log('Add expense pressed');
-  }, []);
+    if (onAddExpense) {
+      onAddExpense();
+    } else {
+      console.log('Add expense pressed');
+    }
+  }, [onAddExpense]);
+
+  const handleEditExpense = useCallback((expenseId: string) => {
+    if (onEditExpense) {
+      onEditExpense(expenseId);
+    } else {
+      console.log('Edit expense pressed:', expenseId);
+    }
+  }, [onEditExpense]);
 
   const handleSortToggle = useCallback(() => {
     handleSortChange(sortBy === 'date-desc' ? 'date-asc' : 'date-desc');
