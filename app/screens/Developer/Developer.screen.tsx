@@ -12,7 +12,7 @@ interface DeveloperScreenProps {
 }
 
 export function DeveloperScreen({ onClose }: DeveloperScreenProps) {
-  const theme = useTheme();
+  const { theme, themeMode, toggleTheme: toggleThemeMode } = useTheme();
   const [createExpense] = useCreateExpenseMutation();
   const [isGenerating, setIsGenerating] = useState(false);
 
@@ -52,8 +52,7 @@ export function DeveloperScreen({ onClose }: DeveloperScreenProps) {
   };
 
   const toggleTheme = () => {
-    // This will be implemented in the next commit with theme persistence
-    Alert.alert('Theme Toggle', 'Theme toggle functionality will be added in the next commit');
+    toggleThemeMode();
   };
 
   return (
@@ -73,7 +72,7 @@ export function DeveloperScreen({ onClose }: DeveloperScreenProps) {
             Theme Controls
           </Text>
           <Button
-            title="Toggle Dark/Light Theme"
+            title={`Switch to ${themeMode === 'dark' ? 'Light' : 'Dark'} Theme`}
             variant="outline"
             onPress={toggleTheme}
             style={styles.button}
@@ -102,7 +101,7 @@ export function DeveloperScreen({ onClose }: DeveloperScreenProps) {
           </Text>
           <View style={styles.infoCard}>
             <Text variant="sm" color="text" style={styles.infoText}>
-              Current Theme: {theme.colors.background === '#FFFFFF' ? 'Light' : 'Dark'}
+              Current Theme: {themeMode === 'system' ? 'System' : themeMode === 'dark' ? 'Dark' : 'Light'}
             </Text>
             <Text variant="sm" color="text" style={styles.infoText}>
               Version: 1.0.0
