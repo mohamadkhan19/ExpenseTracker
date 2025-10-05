@@ -161,21 +161,29 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
         />
       </View>
 
-      <FlatList
-        data={expenses}
-        renderItem={renderExpense}
-        keyExtractor={keyExtractor}
-        contentContainerStyle={styles.list}
-        showsVerticalScrollIndicator={false}
-        ListEmptyComponent={
-          <EmptyState 
-            title="No expenses found"
-            subtitle="Add your first expense to get started"
-            actionTitle="Add Expense"
-            onAction={handleAddExpense}
-          />
-        }
-      />
+      <View style={styles.listContainer}>
+        <FlatList
+          data={expenses}
+          renderItem={renderExpense}
+          keyExtractor={keyExtractor}
+          contentContainerStyle={styles.list}
+          showsVerticalScrollIndicator={false}
+          ListEmptyComponent={
+            <EmptyState 
+              title="No expenses found"
+              subtitle="Add your first expense to get started"
+            />
+          }
+        />
+      </View>
+
+      <View style={styles.fabContainer}>
+        <Button
+          title="+ Add Expense"
+          onPress={handleAddExpense}
+          style={styles.fab}
+        />
+      </View>
 
       <DeleteConfirmationModal
         visible={deleteModalVisible}
@@ -208,9 +216,32 @@ const styles = StyleSheet.create({
   filterLabel: {
     marginBottom: 8,
   },
+  listContainer: {
+    flex: 1,
+  },
   list: {
     paddingHorizontal: 16,
-    paddingBottom: 16,
+    paddingBottom: 80, // Space for FAB
+  },
+  fabContainer: {
+    position: 'absolute',
+    bottom: 20,
+    left: 16,
+    right: 16,
+    alignItems: 'center',
+  },
+  fab: {
+    borderRadius: 25,
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
   },
 });
 
