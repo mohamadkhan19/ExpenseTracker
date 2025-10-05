@@ -1,9 +1,10 @@
 import React, { memo, useMemo, useCallback } from 'react';
-import { FlatList, View, StyleSheet, ScrollView } from 'react-native';
+import { FlatList, View, StyleSheet } from 'react-native';
 import { ScreenContainer } from '../../ui/primitives/ScreenContainer';
 import { ExpenseCard } from '../../ui/organisms/ExpenseCard';
 import { Text } from '../../ui/atoms/Text';
 import { Button } from '../../ui/atoms/Button';
+import { CategoryDropdown } from '../../ui/molecules/CategoryDropdown';
 import { LoadingSpinner } from '../../ui/feedback/LoadingSpinner';
 import { EmptyState } from '../../ui/feedback/EmptyState';
 import { ErrorState } from '../../ui/feedback/ErrorState';
@@ -100,28 +101,15 @@ export function ExpensesListScreen() {
         />
       </View>
 
-      <ScrollView 
-        horizontal 
-        showsHorizontalScrollIndicator={false}
-        style={styles.categoryFilters}
-        contentContainerStyle={styles.categoryFiltersContent}
-      >
-        <Button
-          title="All"
-          variant={filterCategory === 'all' ? 'primary' : 'outline'}
-          size="sm"
-          onPress={() => handleCategoryFilter('all')}
+      <View style={styles.filterSection}>
+        <Text variant="sm" weight="medium" color="text" style={styles.filterLabel}>
+          Filter by Category:
+        </Text>
+        <CategoryDropdown
+          selectedCategory={filterCategory}
+          onCategorySelect={handleCategoryFilter}
         />
-        {categories.map((category) => (
-          <Button
-            key={category}
-            title={category.charAt(0).toUpperCase() + category.slice(1)}
-            variant={filterCategory === category ? 'primary' : 'outline'}
-            size="sm"
-            onPress={() => handleCategoryFilter(category)}
-          />
-        ))}
-      </ScrollView>
+      </View>
 
       <FlatList
         data={expenses}
@@ -155,12 +143,12 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     gap: 8,
   },
-  categoryFilters: {
-    paddingVertical: 8,
-  },
-  categoryFiltersContent: {
+  filterSection: {
     paddingHorizontal: 16,
-    gap: 8,
+    paddingVertical: 12,
+  },
+  filterLabel: {
+    marginBottom: 8,
   },
   list: {
     paddingHorizontal: 16,
