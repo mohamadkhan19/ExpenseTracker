@@ -1,4 +1,11 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+This is an Offline-first Expense Tracker built with Clean Architecture and Atomic UI.
+
+# Architecture Overview
+
+- UI: Atomic components (atoms/molecules/organisms) and screens in `app/ui` and `app/screens`
+- Theme: Light/Dark tokens and provider in `app/theme`
+- State/Data: Redux Toolkit + RTK Query (AsyncStorage-backed) in `app/store`
+- Services: AsyncStorage adapters in `app/services`
 
 # Getting Started
 
