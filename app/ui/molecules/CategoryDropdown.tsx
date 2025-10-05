@@ -3,6 +3,7 @@ import { View, TouchableOpacity, Modal, FlatList } from 'react-native';
 import { useTheme } from '../../theme';
 import { Text } from '../atoms/Text';
 import { ExpenseCategory } from '../../features/expenses/types';
+import { HapticFeedback } from '../../utils/haptic';
 
 interface CategoryDropdownProps {
   selectedCategory: ExpenseCategory | 'all';
@@ -31,6 +32,7 @@ export function CategoryDropdown({ selectedCategory, onCategorySelect }: Categor
   };
 
   const handleSelect = (category: ExpenseCategory | 'all') => {
+    HapticFeedback.selection();
     onCategorySelect(category);
     setIsOpen(false);
   };
@@ -73,7 +75,10 @@ export function CategoryDropdown({ selectedCategory, onCategorySelect }: Categor
           alignItems: 'center',
           minHeight: 48, // Minimum touch target size
         }}
-        onPress={() => setIsOpen(true)}
+        onPress={() => {
+          HapticFeedback.light();
+          setIsOpen(true);
+        }}
         accessibilityRole="button"
         accessibilityLabel={`Category filter: ${formatCategory(selectedCategory)}`}
         accessibilityHint="Tap to change category filter"

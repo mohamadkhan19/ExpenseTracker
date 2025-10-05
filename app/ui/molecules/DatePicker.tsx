@@ -4,6 +4,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { useTheme } from '../../theme';
 import { Text } from '../atoms/Text';
 import { formatDateForInput } from '../../lib/validation';
+import { HapticFeedback } from '../../utils/haptic';
 
 interface DatePickerProps {
   value: string; // YYYY-MM-DD format
@@ -50,7 +51,10 @@ export function DatePicker({ value, onChange, placeholder = 'Select date', error
           justifyContent: 'center',
           minHeight: 48,
         }}
-        onPress={() => setShowPicker(true)}
+        onPress={() => {
+          HapticFeedback.light();
+          setShowPicker(true);
+        }}
         accessibilityRole="button"
         accessibilityLabel={`Date picker: ${formatDisplayDate(value)}`}
         accessibilityHint="Tap to select a date"

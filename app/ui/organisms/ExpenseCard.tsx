@@ -3,6 +3,7 @@ import { View, TouchableOpacity, ViewStyle } from 'react-native';
 import { useTheme } from '../../theme';
 import { Text } from '../atoms/Text';
 import { Expense } from '../../features/expenses/types';
+import { HapticFeedback } from '../../utils/haptic';
 
 interface ExpenseCardProps {
   expense: Expense;
@@ -42,13 +43,18 @@ export function ExpenseCard({ expense, onPress, onLongPress }: ExpenseCardProps)
     return category.charAt(0).toUpperCase() + category.slice(1);
   };
 
+  const handleLongPress = () => {
+    HapticFeedback.warning();
+    onLongPress?.();
+  };
+
   const CardComponent = onPress ? TouchableOpacity : View;
 
   return (
     <CardComponent 
       style={cardStyle} 
       onPress={onPress} 
-      onLongPress={onLongPress}
+      onLongPress={handleLongPress}
       accessibilityRole="button"
       accessibilityLabel={`Expense: ${expense.description}, ${formatAmount(expense.amount)}, ${formatCategory(expense.category)}, ${formatDate(expense.date)}`}
       accessibilityHint={onPress ? "Tap to edit expense" : onLongPress ? "Long press to delete expense" : undefined}

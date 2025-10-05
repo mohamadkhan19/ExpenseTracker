@@ -2,18 +2,22 @@ import React from 'react';
 import { TouchableOpacity, TouchableOpacityProps, ViewStyle } from 'react-native';
 import { useTheme } from '../../theme';
 import { Text } from './Text';
+import { HapticFeedback } from '../../utils/haptic';
 
 interface ButtonProps extends TouchableOpacityProps {
   title: string;
   variant?: 'primary' | 'secondary' | 'outline';
   size?: 'sm' | 'md' | 'lg';
+  hapticFeedback?: boolean;
 }
 
 export function Button({ 
   title, 
   variant = 'primary', 
   size = 'md',
+  hapticFeedback = true,
   style,
+  onPress,
   ...props 
 }: ButtonProps) {
   const theme = useTheme();
@@ -72,12 +76,20 @@ export function Button({
     }
   };
 
+  const handlePress = (event: any) => {
+    if (hapticFeedback) {
+      HapticFeedback.light();
+    }
+    onPress?.(event);
+  };
+
   return (
     <TouchableOpacity 
       style={[getButtonStyle(), style]} 
       accessibilityRole="button"
       accessibilityLabel={title}
       accessibilityHint={`Tap to ${title.toLowerCase()}`}
+      onPress={handlePress}
       {...props} 
     >
       <Text 
