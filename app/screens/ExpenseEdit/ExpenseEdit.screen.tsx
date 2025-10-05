@@ -2,8 +2,8 @@ import React, { useCallback } from 'react';
 import { Alert } from 'react-native';
 import { ScreenContainer } from '../../ui/primitives/ScreenContainer';
 import { ExpenseForm } from '../../ui/organisms/ExpenseForm';
-import { useCreateExpenseMutation } from '../../store/api/expenses.api';
-import { FormData, parseFormData } from '../../lib/validation';
+import { useExpenseEdit } from './useExpenseEdit.hook';
+import { FormData } from '../../lib/validation';
 
 interface AddExpenseScreenProps {
   onSuccess?: () => void;
@@ -11,20 +11,19 @@ interface AddExpenseScreenProps {
 }
 
 export function AddExpenseScreen({ onSuccess, onCancel }: AddExpenseScreenProps) {
-  const [createExpense, { isLoading }] = useCreateExpenseMutation();
+  const { handleSubmit, isLoading } = useExpenseEdit();
 
-  const handleSubmit = useCallback(async (data: FormData) => {
-    try {
-      const expenseData = parseFormData(data);
-      await createExpense(expenseData).unwrap();
-      
+  const handleFormSubmit = useCallback(async (data: FormData) => {
+    const result = await handleSubmit(data, onSuccess);
+    
+    if (result.success) {
       Alert.alert('Success', 'Expense added successfully!', [
         { text: 'OK', onPress: onSuccess }
       ]);
-    } catch (error) {
-      Alert.alert('Error', 'Failed to add expense. Please try again.');
+    } else {
+      Alert.alert('Error', result.error || 'Failed to add expense. Please try again.');
     }
-  }, [createExpense, onSuccess]);
+  }, [handleSubmit, onSuccess]);
 
   const handleCancel = useCallback(() => {
     if (onCancel) {
@@ -44,7 +43,7 @@ export function AddExpenseScreen({ onSuccess, onCancel }: AddExpenseScreenProps)
   return (
     <ScreenContainer>
       <ExpenseForm
-        onSubmit={handleSubmit}
+        onSubmit={handleFormSubmit}
         onCancel={handleCancel}
         submitButtonTitle="Add Expense"
         isLoading={isLoading}

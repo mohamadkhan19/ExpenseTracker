@@ -2,8 +2,9 @@ import React, { useCallback } from 'react';
 import { Alert } from 'react-native';
 import { ScreenContainer } from '../../ui/primitives/ScreenContainer';
 import { ExpenseForm } from '../../ui/organisms/ExpenseForm';
-import { useGetExpenseByIdQuery, useUpdateExpenseMutation } from '../../store/api/expenses.api';
-import { FormData, parseFormData, formatDateForInput } from '../../lib/validation';
+import { useGetExpenseByIdQuery } from '../../store/api/expenses.api';
+import { useExpenseEdit } from '../ExpenseEdit/useExpenseEdit.hook';
+import { FormData, formatDateForInput } from '../../lib/validation';
 
 interface EditExpenseScreenProps {
   expenseId: string;
@@ -13,22 +14,19 @@ interface EditExpenseScreenProps {
 
 export function EditExpenseScreen({ expenseId, onSuccess, onCancel }: EditExpenseScreenProps) {
   const { data: expense, isLoading: isLoadingExpense } = useGetExpenseByIdQuery(expenseId);
-  const [updateExpense, { isLoading: isUpdating }] = useUpdateExpenseMutation();
+  const { handleSubmit, isLoading } = useExpenseEdit(expenseId);
 
-  const handleSubmit = useCallback(async (data: FormData) => {
-    if (!expense) return;
-
-    try {
-      const expenseData = parseFormData(data);
-      await updateExpense({ id: expenseId, ...expenseData }).unwrap();
-      
+  const handleFormSubmit = useCallback(async (data: FormData) => {
+    const result = await handleSubmit(data, onSuccess);
+    
+    if (result.success) {
       Alert.alert('Success', 'Expense updated successfully!', [
         { text: 'OK', onPress: onSuccess }
       ]);
-    } catch (error) {
-      Alert.alert('Error', 'Failed to update expense. Please try again.');
+    } else {
+      Alert.alert('Error', result.error || 'Failed to update expense. Please try again.');
     }
-  }, [expense, expenseId, updateExpense, onSuccess]);
+  }, [handleSubmit, onSuccess]);
 
   const handleCancel = useCallback(() => {
     if (onCancel) {
@@ -72,10 +70,10 @@ export function EditExpenseScreen({ expenseId, onSuccess, onCancel }: EditExpens
     <ScreenContainer>
       <ExpenseForm
         initialData={initialData}
-        onSubmit={handleSubmit}
+        onSubmit={handleFormSubmit}
         onCancel={handleCancel}
         submitButtonTitle="Update Expense"
-        isLoading={isUpdating}
+        isLoading={isLoading}
       />
     </ScreenContainer>
   );
