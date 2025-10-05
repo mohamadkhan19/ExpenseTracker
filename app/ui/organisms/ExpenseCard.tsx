@@ -15,11 +15,19 @@ export function ExpenseCard({ expense, onPress, onLongPress }: ExpenseCardProps)
   
   const cardStyle: ViewStyle = {
     backgroundColor: theme.colors.card,
-    borderRadius: theme.radii.md,
-    padding: theme.spacing.md,
-    marginBottom: theme.spacing.sm,
+    borderRadius: theme.radii.lg,
+    padding: theme.spacing.lg,
+    marginBottom: theme.spacing.md,
     borderWidth: 1,
     borderColor: theme.colors.border,
+    elevation: 2,
+    shadowColor: theme.colors.text,
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
   };
 
   const formatAmount = (amount: number) => {

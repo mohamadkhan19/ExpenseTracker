@@ -19,13 +19,21 @@ export function Button({
   const theme = useTheme();
   
   const getButtonStyle = (): ViewStyle => {
-    const baseStyle: ViewStyle = {
-      paddingHorizontal: theme.spacing[size === 'sm' ? 'md' : size === 'lg' ? 'xl' : 'lg'],
-      paddingVertical: theme.spacing[size === 'sm' ? 'sm' : size === 'lg' ? 'lg' : 'md'],
-      borderRadius: theme.radii.md,
-      alignItems: 'center',
-      justifyContent: 'center',
-    };
+      const baseStyle: ViewStyle = {
+        paddingHorizontal: theme.spacing[size === 'sm' ? 'md' : size === 'lg' ? 'xl' : 'lg'],
+        paddingVertical: theme.spacing[size === 'sm' ? 'sm' : size === 'lg' ? 'lg' : 'md'],
+        borderRadius: theme.radii.lg,
+        alignItems: 'center',
+        justifyContent: 'center',
+        elevation: 2,
+        shadowColor: theme.colors.text,
+        shadowOffset: {
+          width: 0,
+          height: 1,
+        },
+        shadowOpacity: 0.1,
+        shadowRadius: 2,
+      };
 
     switch (variant) {
       case 'primary':

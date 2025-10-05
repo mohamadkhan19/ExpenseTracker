@@ -127,7 +127,7 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
 
   return (
     <ScreenContainer>
-      <View style={styles.header}>
+      <View style={[styles.header, { borderBottomColor: theme.colors.border }]}>
         <Text variant="xxl" weight="bold" color="text">
           Expenses
         </Text>
@@ -179,11 +179,11 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
         />
       </View>
 
-      <View style={styles.fabContainer}>
+      <View style={[styles.fabContainer, { backgroundColor: theme.colors.background }]}>
         <Button
           title="+ Add Expense"
           onPress={handleAddExpense}
-          style={styles.fab}
+          style={[styles.fab, { backgroundColor: theme.colors.primary }]}
         />
       </View>
 
@@ -201,19 +201,20 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
 const styles = StyleSheet.create({
   header: {
     paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingVertical: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#E5E7EB',
+    borderBottomColor: 'transparent', // Will be set dynamically
   },
   controls: {
     flexDirection: 'row',
     paddingHorizontal: 16,
     paddingVertical: 12,
-    gap: 8,
+    gap: 12,
   },
   filterSection: {
     paddingHorizontal: 16,
     paddingVertical: 12,
+    backgroundColor: 'transparent', // Will be set dynamically
   },
   filterLabel: {
     marginBottom: 8,
@@ -223,7 +224,7 @@ const styles = StyleSheet.create({
   },
   list: {
     paddingHorizontal: 16,
-    paddingBottom: 80, // Space for FAB
+    paddingBottom: 100, // Space for FAB
   },
   fabContainer: {
     position: 'absolute',
@@ -232,19 +233,20 @@ const styles = StyleSheet.create({
     right: 0,
     paddingHorizontal: 16,
     paddingBottom: 20,
+    backgroundColor: 'transparent', // Will be set dynamically
   },
   fab: {
-    borderRadius: 25,
+    borderRadius: 12,
     paddingHorizontal: 24,
-    paddingVertical: 12,
-    elevation: 4,
+    paddingVertical: 16,
+    elevation: 8,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: 4,
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
   },
 });
 
