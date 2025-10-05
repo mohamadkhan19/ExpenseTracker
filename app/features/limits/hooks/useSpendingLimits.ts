@@ -1,5 +1,5 @@
 import { useMemo, useState, useCallback } from 'react';
-import { useGetExpensesQuery } from '../../store/api/expenses.api';
+import { useGetExpensesQuery } from '../../../store/api/expenses.api';
 import { 
   SpendingLimit, 
   LimitStatus, 
