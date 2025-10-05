@@ -1,4 +1,4 @@
-import React, { memo, useMemo, useCallback } from 'react';
+import React, { memo, useMemo, useCallback, useState } from 'react';
 import { FlatList, View, StyleSheet } from 'react-native';
 import { ScreenContainer } from '../../ui/primitives/ScreenContainer';
 import { ExpenseCard } from '../../ui/organisms/ExpenseCard';
@@ -8,12 +8,14 @@ import { CategoryDropdown } from '../../ui/molecules/CategoryDropdown';
 import { LoadingSpinner } from '../../ui/feedback/LoadingSpinner';
 import { EmptyState } from '../../ui/feedback/EmptyState';
 import { ErrorState } from '../../ui/feedback/ErrorState';
+import { DeleteConfirmationModal } from '../../ui/feedback/DeleteConfirmationModal';
 import { useExpensesList } from './useExpensesList.hook';
+import { useDeleteExpenseMutation } from '../../store/api/expenses.api';
 import { Expense, ExpenseCategory } from '../../features/expenses/types';
 import { useTheme } from '../../theme';
 
-const ExpenseItem = memo(({ expense, onPress }: { expense: Expense; onPress?: () => void }) => (
-  <ExpenseCard expense={expense} onPress={onPress} />
+const ExpenseItem = memo(({ expense, onPress, onLongPress }: { expense: Expense; onPress?: () => void; onLongPress?: () => void }) => (
+  <ExpenseCard expense={expense} onPress={onPress} onLongPress={onLongPress} />
 ));
 
 ExpenseItem.displayName = 'ExpenseItem';
@@ -25,6 +27,9 @@ interface ExpensesListScreenProps {
 
 export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesListScreenProps) {
   const theme = useTheme();
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [expenseToDelete, setExpenseToDelete] = useState<Expense | null>(null);
+  
   const {
     expenses,
     isLoading,
@@ -37,12 +42,15 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
     clearFilters,
   } = useExpensesList();
 
+  const [deleteExpense, { isLoading: isDeleting }] = useDeleteExpenseMutation();
+
   const renderExpense = useCallback(({ item }: { item: Expense }) => (
     <ExpenseItem 
       expense={item} 
       onPress={() => handleEditExpense(item.id)}
+      onLongPress={() => handleDeleteExpense(item)}
     />
-  ), [handleEditExpense]);
+  ), [handleEditExpense, handleDeleteExpense]);
 
   const keyExtractor = useCallback((item: Expense) => item.id, []);
 
@@ -74,6 +82,28 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
   const handleSortToggle = useCallback(() => {
     handleSortChange(sortBy === 'date-desc' ? 'date-asc' : 'date-desc');
   }, [sortBy, handleSortChange]);
+
+  const handleDeleteExpense = useCallback((expense: Expense) => {
+    setExpenseToDelete(expense);
+    setDeleteModalVisible(true);
+  }, []);
+
+  const confirmDelete = useCallback(async () => {
+    if (!expenseToDelete) return;
+
+    try {
+      await deleteExpense(expenseToDelete.id).unwrap();
+      setDeleteModalVisible(false);
+      setExpenseToDelete(null);
+    } catch (error) {
+      console.error('Failed to delete expense:', error);
+    }
+  }, [expenseToDelete, deleteExpense]);
+
+  const cancelDelete = useCallback(() => {
+    setDeleteModalVisible(false);
+    setExpenseToDelete(null);
+  }, []);
 
   if (isLoading) {
     return (
@@ -145,6 +175,14 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
             onAction={handleAddExpense}
           />
         }
+      />
+
+      <DeleteConfirmationModal
+        visible={deleteModalVisible}
+        expenseDescription={expenseToDelete?.description}
+        onConfirm={confirmDelete}
+        onCancel={cancelDelete}
+        isLoading={isDeleting}
       />
     </ScreenContainer>
   );

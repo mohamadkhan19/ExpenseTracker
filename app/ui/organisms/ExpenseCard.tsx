@@ -7,9 +7,10 @@ import { Expense } from '../../features/expenses/types';
 interface ExpenseCardProps {
   expense: Expense;
   onPress?: () => void;
+  onLongPress?: () => void;
 }
 
-export function ExpenseCard({ expense, onPress }: ExpenseCardProps) {
+export function ExpenseCard({ expense, onPress, onLongPress }: ExpenseCardProps) {
   const theme = useTheme();
   
   const cardStyle: ViewStyle = {
@@ -36,7 +37,7 @@ export function ExpenseCard({ expense, onPress }: ExpenseCardProps) {
   const CardComponent = onPress ? TouchableOpacity : View;
 
   return (
-    <CardComponent style={cardStyle} onPress={onPress}>
+    <CardComponent style={cardStyle} onPress={onPress} onLongPress={onLongPress}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
         <View style={{ flex: 1 }}>
           <Text variant="lg" weight="semibold" color="text">
