@@ -11,7 +11,7 @@ import {
   SafeAreaProvider,
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
-import { ThemeProvider } from './app/theme';
+import { ThemeProvider } from './app/theme/index';
 import AppNavigator from './app/navigation/AppNavigator';
 
 function App() {
