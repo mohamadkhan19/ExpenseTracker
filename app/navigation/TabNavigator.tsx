@@ -45,6 +45,7 @@ export default function TabNavigator() {
         component={ExpensesListScreen}
         options={{
           title: 'Expenses',
+          headerShown: false,
           tabBarIcon: ({ color, size }) => (
             <TabIcon name="wallet" size={size} color={color} />
           ),
@@ -55,6 +56,7 @@ export default function TabNavigator() {
         component={AnalyticsScreen}
         options={{
           title: 'Analytics',
+          headerShown: false,
           tabBarIcon: ({ color, size }) => (
             <TabIcon name="chart-bar" size={size} color={color} />
           ),
