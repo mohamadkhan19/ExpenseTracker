@@ -90,6 +90,7 @@ export function ExpenseForm({
             placeholder="0.00"
             keyboardType="numeric"
             error={getFieldError('amount')}
+            helperText="Enter amount in dollars"
           />
         </View>
 
@@ -114,6 +115,7 @@ export function ExpenseForm({
             multiline
             numberOfLines={3}
             error={getFieldError('description')}
+            helperText="3-100 characters"
           />
         </View>
 
@@ -126,6 +128,7 @@ export function ExpenseForm({
             onChangeText={handleDateChange}
             placeholder="YYYY-MM-DD"
             error={getFieldError('date')}
+            helperText="Format: YYYY-MM-DD"
           />
         </View>
 
