@@ -1,5 +1,5 @@
 import React, { memo, useMemo, useCallback, useState } from 'react';
-import { FlatList, View, StyleSheet } from 'react-native';
+import { FlatList, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { ScreenContainer } from '../../ui/primitives/ScreenContainer';
 import { ExpenseCard } from '../../ui/organisms/ExpenseCard';
 import { Text } from '../../ui/atoms/Text';
@@ -9,6 +9,7 @@ import { LoadingSpinner } from '../../ui/feedback/LoadingSpinner';
 import { EmptyState } from '../../ui/feedback/EmptyState';
 import { ErrorState } from '../../ui/feedback/ErrorState';
 import { DeleteConfirmationModal } from '../../ui/feedback/DeleteConfirmationModal';
+import { DeveloperScreen } from '../Developer/Developer.screen';
 import { useExpensesList } from './useExpensesList.hook';
 import { useDeleteExpenseMutation } from '../../store/api/expenses.api';
 import { Expense, ExpenseCategory } from '../../features/expenses/types';
@@ -29,6 +30,8 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
   const theme = useTheme();
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [expenseToDelete, setExpenseToDelete] = useState<Expense | null>(null);
+  const [developerScreenVisible, setDeveloperScreenVisible] = useState(false);
+  const [tapCount, setTapCount] = useState(0);
   
   const {
     expenses,
@@ -105,6 +108,21 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
     setExpenseToDelete(null);
   }, []);
 
+  const handleTitleTap = useCallback(() => {
+    const newTapCount = tapCount + 1;
+    setTapCount(newTapCount);
+    
+    if (newTapCount >= 10) {
+      setDeveloperScreenVisible(true);
+      setTapCount(0);
+    }
+    
+    // Reset tap count after 3 seconds
+    setTimeout(() => {
+      setTapCount(0);
+    }, 3000);
+  }, [tapCount]);
+
   if (isLoading) {
     return (
       <ScreenContainer>
@@ -125,12 +143,20 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
     );
   }
 
+  if (developerScreenVisible) {
+    return (
+      <DeveloperScreen onClose={() => setDeveloperScreenVisible(false)} />
+    );
+  }
+
   return (
     <ScreenContainer>
       <View style={[styles.header, { borderBottomColor: theme.colors.border }]}>
-        <Text variant="xxl" weight="bold" color="text">
-          Expenses
-        </Text>
+        <TouchableOpacity onPress={handleTitleTap} activeOpacity={0.7}>
+          <Text variant="xxl" weight="bold" color="text">
+            Expenses
+          </Text>
+        </TouchableOpacity>
         <Text variant="lg" weight="semibold" color="primary">
           Total: ${totalAmount.toFixed(2)}
         </Text>
