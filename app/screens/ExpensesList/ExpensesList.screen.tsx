@@ -4,6 +4,9 @@ import { ScreenContainer } from '../../ui/primitives/ScreenContainer';
 import { ExpenseCard } from '../../ui/organisms/ExpenseCard';
 import { Text } from '../../ui/atoms/Text';
 import { Button } from '../../ui/atoms/Button';
+import { LoadingSpinner } from '../../ui/feedback/LoadingSpinner';
+import { EmptyState } from '../../ui/feedback/EmptyState';
+import { ErrorState } from '../../ui/feedback/ErrorState';
 import { useExpensesList } from './useExpensesList.hook';
 import { Expense } from '../../features/expenses/types';
 import { useTheme } from '../../theme';
@@ -34,13 +37,22 @@ export function ExpensesListScreen() {
 
   const keyExtractor = (item: Expense) => item.id;
 
+  if (isLoading) {
+    return (
+      <ScreenContainer>
+        <LoadingSpinner />
+      </ScreenContainer>
+    );
+  }
+
   if (error) {
     return (
-      <ScreenContainer style={styles.center}>
-        <Text variant="lg" color="error" style={styles.errorText}>
-          Error loading expenses
-        </Text>
-        <Button title="Retry" onPress={() => window.location.reload()} />
+      <ScreenContainer>
+        <ErrorState 
+          title="Error loading expenses"
+          message="Unable to load your expenses. Please try again."
+          onRetry={() => window.location.reload()}
+        />
       </ScreenContainer>
     );
   }
@@ -84,14 +96,12 @@ export function ExpensesListScreen() {
         contentContainerStyle={styles.list}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
-          <View style={styles.empty}>
-            <Text variant="lg" color="subtext">
-              No expenses found
-            </Text>
-            <Text variant="sm" color="subtext" style={styles.emptySubtext}>
-              Add your first expense to get started
-            </Text>
-          </View>
+          <EmptyState 
+            title="No expenses found"
+            subtitle="Add your first expense to get started"
+            actionTitle="Add Expense"
+            onAction={() => console.log('Add expense pressed')}
+          />
         }
       />
     </ScreenContainer>
@@ -99,14 +109,6 @@ export function ExpensesListScreen() {
 }
 
 const styles = StyleSheet.create({
-  center: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  errorText: {
-    marginBottom: 16,
-    textAlign: 'center',
-  },
   header: {
     paddingHorizontal: 16,
     paddingVertical: 12,
@@ -122,16 +124,6 @@ const styles = StyleSheet.create({
   list: {
     paddingHorizontal: 16,
     paddingBottom: 16,
-  },
-  empty: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 64,
-  },
-  emptySubtext: {
-    marginTop: 8,
-    textAlign: 'center',
   },
 });
 
