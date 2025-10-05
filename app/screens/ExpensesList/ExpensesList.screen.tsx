@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useMemo, useCallback } from 'react';
 import { FlatList, View, StyleSheet, ScrollView } from 'react-native';
 import { ScreenContainer } from '../../ui/primitives/ScreenContainer';
 import { ExpenseCard } from '../../ui/organisms/ExpenseCard';
@@ -31,11 +31,28 @@ export function ExpensesListScreen() {
     clearFilters,
   } = useExpensesList();
 
-  const renderExpense = ({ item }: { item: Expense }) => (
+  const renderExpense = useCallback(({ item }: { item: Expense }) => (
     <ExpenseItem expense={item} />
+  ), []);
+
+  const keyExtractor = useCallback((item: Expense) => item.id, []);
+
+  const categories = useMemo(() => 
+    (['food', 'transport', 'entertainment', 'shopping', 'utilities', 'health', 'education', 'other'] as ExpenseCategory[]),
+    []
   );
 
-  const keyExtractor = (item: Expense) => item.id;
+  const handleRetry = useCallback(() => {
+    window.location.reload();
+  }, []);
+
+  const handleAddExpense = useCallback(() => {
+    console.log('Add expense pressed');
+  }, []);
+
+  const handleSortToggle = useCallback(() => {
+    handleSortChange(sortBy === 'date-desc' ? 'date-asc' : 'date-desc');
+  }, [sortBy, handleSortChange]);
 
   if (isLoading) {
     return (
@@ -51,7 +68,7 @@ export function ExpensesListScreen() {
         <ErrorState 
           title="Error loading expenses"
           message="Unable to load your expenses. Please try again."
-          onRetry={() => window.location.reload()}
+          onRetry={handleRetry}
         />
       </ScreenContainer>
     );
@@ -73,7 +90,7 @@ export function ExpensesListScreen() {
           title={sortBy === 'date-desc' ? 'Date ↓' : 'Date ↑'}
           variant="outline"
           size="sm"
-          onPress={() => handleSortChange(sortBy === 'date-desc' ? 'date-asc' : 'date-desc')}
+          onPress={handleSortToggle}
         />
         <Button
           title="Clear"
@@ -95,7 +112,7 @@ export function ExpensesListScreen() {
           size="sm"
           onPress={() => handleCategoryFilter('all')}
         />
-        {(['food', 'transport', 'entertainment', 'shopping', 'utilities', 'health', 'education', 'other'] as ExpenseCategory[]).map((category) => (
+        {categories.map((category) => (
           <Button
             key={category}
             title={category.charAt(0).toUpperCase() + category.slice(1)}
@@ -117,7 +134,7 @@ export function ExpensesListScreen() {
             title="No expenses found"
             subtitle="Add your first expense to get started"
             actionTitle="Add Expense"
-            onAction={() => console.log('Add expense pressed')}
+            onAction={handleAddExpense}
           />
         }
       />
