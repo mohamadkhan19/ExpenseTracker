@@ -153,30 +153,26 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
   return (
     <ScreenContainer>
       <View style={[styles.header, { borderBottomColor: theme.colors.border }]}>
-        <TouchableOpacity onPress={handleTitleTap} activeOpacity={0.7}>
-          <Text variant="xxl" weight="bold" color="text">
-            Expenses
+        <View style={styles.headerLeft}>
+          <TouchableOpacity onPress={handleTitleTap} activeOpacity={0.7}>
+            <Text variant="xxl" weight="bold" color="text">
+              Expenses
+            </Text>
+          </TouchableOpacity>
+          <Text variant="lg" weight="semibold" color="primary">
+            Total: ${totalAmount.toFixed(2)}
           </Text>
-        </TouchableOpacity>
-        <Text variant="lg" weight="semibold" color="primary">
-          Total: ${totalAmount.toFixed(2)}
-        </Text>
+        </View>
+        <View style={styles.headerRight}>
+          <Button
+            title={sortBy === 'date-desc' ? 'Date ↓' : 'Date ↑'}
+            variant="outline"
+            size="sm"
+            onPress={handleSortToggle}
+          />
+        </View>
       </View>
 
-      <View style={styles.controls}>
-        <Button
-          title={sortBy === 'date-desc' ? 'Date ↓' : 'Date ↑'}
-          variant="outline"
-          size="sm"
-          onPress={handleSortToggle}
-        />
-        <Button
-          title="Clear"
-          variant="secondary"
-          size="sm"
-          onPress={clearFilters}
-        />
-      </View>
 
       <View style={styles.filterSection}>
         <Text variant="sm" weight="medium" color="text" style={styles.filterLabel}>
@@ -229,16 +225,19 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
 
 const styles = StyleSheet.create({
   header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     paddingHorizontal: 16,
     paddingVertical: 16,
     borderBottomWidth: 1,
     borderBottomColor: 'transparent', // Will be set dynamically
   },
-  controls: {
-    flexDirection: 'row',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    gap: 12,
+  headerLeft: {
+    flex: 1,
+  },
+  headerRight: {
+    alignItems: 'flex-end',
   },
   filterSection: {
     paddingHorizontal: 16,
