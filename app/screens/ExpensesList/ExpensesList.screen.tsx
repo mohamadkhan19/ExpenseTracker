@@ -225,10 +225,11 @@ const styles = StyleSheet.create({
   },
   fabContainer: {
     position: 'absolute',
-    bottom: 20,
-    left: 16,
-    right: 16,
-    alignItems: 'center',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    paddingHorizontal: 16,
+    paddingBottom: 20,
   },
   fab: {
     borderRadius: 25,
