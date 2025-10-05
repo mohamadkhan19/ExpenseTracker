@@ -5,7 +5,7 @@ import { useTheme } from '../../theme/index';
 
 export function ScreenContainer({ children, style, ...rest }: ViewProps & { children?: React.ReactNode }) {
   const insets = useSafeAreaInsets();
-  const { colors } = useTheme();
+  const { theme } = useTheme();
   return (
     <View
       style={[
@@ -15,7 +15,7 @@ export function ScreenContainer({ children, style, ...rest }: ViewProps & { chil
           paddingBottom: insets.bottom,
           paddingLeft: insets.left,
           paddingRight: insets.right,
-          backgroundColor: colors.background,
+          backgroundColor: theme.colors.background,
         },
         style,
       ]}

@@ -19,7 +19,7 @@ export function DeleteConfirmationModal({
   onCancel,
   isLoading = false,
 }: DeleteConfirmationModalProps) {
-  const theme = useTheme();
+  const { theme } = useTheme();
 
   return (
     <Modal

@@ -3,6 +3,7 @@ import { View, TouchableOpacity, Modal, FlatList } from 'react-native';
 import { useTheme } from '../../theme';
 import { Text } from '../atoms/Text';
 import { ExpenseCategory } from '../../features/expenses/types';
+import { HapticFeedback } from '../../utils/haptic';
 
 interface CategoryDropdownProps {
   selectedCategory: ExpenseCategory | 'all';
@@ -22,7 +23,7 @@ const categories: (ExpenseCategory | 'all')[] = [
 ];
 
 export function CategoryDropdown({ selectedCategory, onCategorySelect }: CategoryDropdownProps) {
-  const theme = useTheme();
+  const { theme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
 
   const formatCategory = (category: ExpenseCategory | 'all') => {
@@ -31,6 +32,7 @@ export function CategoryDropdown({ selectedCategory, onCategorySelect }: Categor
   };
 
   const handleSelect = (category: ExpenseCategory | 'all') => {
+    HapticFeedback.selection();
     onCategorySelect(category);
     setIsOpen(false);
   };
@@ -44,6 +46,9 @@ export function CategoryDropdown({ selectedCategory, onCategorySelect }: Categor
         borderBottomColor: theme.colors.border,
       }}
       onPress={() => handleSelect(item)}
+      accessibilityRole="button"
+      accessibilityLabel={`Category: ${formatCategory(item)}`}
+      accessibilityHint={item === selectedCategory ? "Currently selected" : "Tap to select this category"}
     >
       <Text
         variant="md"
@@ -61,15 +66,22 @@ export function CategoryDropdown({ selectedCategory, onCategorySelect }: Categor
         style={{
           borderWidth: 1,
           borderColor: theme.colors.border,
-          borderRadius: theme.radii.md,
-          paddingHorizontal: theme.spacing.md,
-          paddingVertical: theme.spacing.sm,
+          borderRadius: theme.radii.lg,
+          paddingHorizontal: theme.spacing.lg,
+          paddingVertical: theme.spacing.md,
           backgroundColor: theme.colors.surface,
           flexDirection: 'row',
           justifyContent: 'space-between',
           alignItems: 'center',
+          minHeight: 48, // Minimum touch target size
         }}
-        onPress={() => setIsOpen(true)}
+        onPress={() => {
+          HapticFeedback.light();
+          setIsOpen(true);
+        }}
+        accessibilityRole="button"
+        accessibilityLabel={`Category filter: ${formatCategory(selectedCategory)}`}
+        accessibilityHint="Tap to change category filter"
       >
         <Text variant="md" color="text">
           {formatCategory(selectedCategory)}

@@ -24,7 +24,7 @@ export function ExpenseForm({
   submitButtonTitle = 'Save Expense',
   isLoading = false,
 }: ExpenseFormProps) {
-  const theme = useTheme();
+  const { theme } = useTheme();
   
   const [formData, setFormData] = useState<FormData>({
     amount: initialData?.amount || '',
@@ -156,22 +156,22 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   form: {
-    padding: 16,
+    padding: 20,
   },
   title: {
-    marginBottom: 24,
+    marginBottom: 32,
     textAlign: 'center',
   },
   field: {
-    marginBottom: 16,
+    marginBottom: 20,
   },
   label: {
-    marginBottom: 8,
+    marginBottom: 12,
   },
   buttons: {
     flexDirection: 'row',
-    gap: 12,
-    marginTop: 24,
+    gap: 16,
+    marginTop: 32,
   },
   button: {
     flex: 1,

@@ -1,5 +1,5 @@
 import React, { memo, useMemo, useCallback, useState } from 'react';
-import { FlatList, View, StyleSheet } from 'react-native';
+import { FlatList, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { ScreenContainer } from '../../ui/primitives/ScreenContainer';
 import { ExpenseCard } from '../../ui/organisms/ExpenseCard';
 import { Text } from '../../ui/atoms/Text';
@@ -9,6 +9,7 @@ import { LoadingSpinner } from '../../ui/feedback/LoadingSpinner';
 import { EmptyState } from '../../ui/feedback/EmptyState';
 import { ErrorState } from '../../ui/feedback/ErrorState';
 import { DeleteConfirmationModal } from '../../ui/feedback/DeleteConfirmationModal';
+import { DeveloperScreen } from '../Developer/Developer.screen';
 import { useExpensesList } from './useExpensesList.hook';
 import { useDeleteExpenseMutation } from '../../store/api/expenses.api';
 import { Expense, ExpenseCategory } from '../../features/expenses/types';
@@ -26,9 +27,11 @@ interface ExpensesListScreenProps {
 }
 
 export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesListScreenProps) {
-  const theme = useTheme();
+  const { theme } = useTheme();
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [expenseToDelete, setExpenseToDelete] = useState<Expense | null>(null);
+  const [developerScreenVisible, setDeveloperScreenVisible] = useState(false);
+  const [tapCount, setTapCount] = useState(0);
   
   const {
     expenses,
@@ -105,10 +108,25 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
     setExpenseToDelete(null);
   }, []);
 
+  const handleTitleTap = useCallback(() => {
+    const newTapCount = tapCount + 1;
+    setTapCount(newTapCount);
+    
+    if (newTapCount >= 10) {
+      setDeveloperScreenVisible(true);
+      setTapCount(0);
+    }
+    
+    // Reset tap count after 3 seconds
+    setTimeout(() => {
+      setTapCount(0);
+    }, 3000);
+  }, [tapCount]);
+
   if (isLoading) {
     return (
       <ScreenContainer>
-        <LoadingSpinner />
+        <LoadingSpinner message="Loading expenses..." />
       </ScreenContainer>
     );
   }
@@ -120,36 +138,45 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
           title="Error loading expenses"
           message="Unable to load your expenses. Please try again."
           onRetry={handleRetry}
+          icon="📱"
         />
       </ScreenContainer>
     );
   }
 
+  if (developerScreenVisible) {
+    return (
+      <DeveloperScreen onClose={() => setDeveloperScreenVisible(false)} />
+    );
+  }
+
   return (
     <ScreenContainer>
-      <View style={styles.header}>
-        <Text variant="xxl" weight="bold" color="text">
-          Expenses
-        </Text>
-        <Text variant="lg" weight="semibold" color="primary">
-          Total: ${totalAmount.toFixed(2)}
-        </Text>
+      <View style={[styles.header, { borderBottomColor: theme.colors.border }]}>
+        <View style={styles.headerLeft}>
+          <TouchableOpacity onPress={handleTitleTap} activeOpacity={0.7}>
+            <Text variant="xxl" weight="bold" color="text">
+              Expenses
+            </Text>
+          </TouchableOpacity>
+          <Text 
+            variant="lg" 
+            weight="semibold" 
+            style={{ color: theme.colors.loss }} // Robinhood-style red for total expenses
+          >
+            Total: -${totalAmount.toFixed(2)}
+          </Text>
+        </View>
+        <View style={styles.headerRight}>
+          <Button
+            title={sortBy === 'date-desc' ? 'Date ↓' : 'Date ↑'}
+            variant="outline"
+            size="sm"
+            onPress={handleSortToggle}
+          />
+        </View>
       </View>
 
-      <View style={styles.controls}>
-        <Button
-          title={sortBy === 'date-desc' ? 'Date ↓' : 'Date ↑'}
-          variant="outline"
-          size="sm"
-          onPress={handleSortToggle}
-        />
-        <Button
-          title="Clear"
-          variant="secondary"
-          size="sm"
-          onPress={clearFilters}
-        />
-      </View>
 
       <View style={styles.filterSection}>
         <Text variant="sm" weight="medium" color="text" style={styles.filterLabel}>
@@ -168,20 +195,24 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
           keyExtractor={keyExtractor}
           contentContainerStyle={styles.list}
           showsVerticalScrollIndicator={false}
+          accessibilityRole="list"
+          accessibilityLabel="Expenses list"
           ListEmptyComponent={
             <EmptyState 
               title="No expenses found"
               subtitle="Add your first expense to get started"
+              icon="💰"
+              variant="inline"
             />
           }
         />
       </View>
 
-      <View style={styles.fabContainer}>
+      <View style={[styles.fabContainer, { backgroundColor: theme.colors.background }]}>
         <Button
           title="+ Add Expense"
           onPress={handleAddExpense}
-          style={styles.fab}
+          style={[styles.fab, { backgroundColor: theme.colors.primary }]}
         />
       </View>
 
@@ -198,20 +229,24 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
 
 const styles = StyleSheet.create({
   header: {
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#E5E7EB',
-  },
-  controls: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     paddingHorizontal: 16,
-    paddingVertical: 12,
-    gap: 8,
+    paddingVertical: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: 'transparent', // Will be set dynamically
+  },
+  headerLeft: {
+    flex: 1,
+  },
+  headerRight: {
+    alignItems: 'flex-end',
   },
   filterSection: {
     paddingHorizontal: 16,
     paddingVertical: 12,
+    backgroundColor: 'transparent', // Will be set dynamically
   },
   filterLabel: {
     marginBottom: 8,
@@ -221,7 +256,7 @@ const styles = StyleSheet.create({
   },
   list: {
     paddingHorizontal: 16,
-    paddingBottom: 80, // Space for FAB
+    paddingBottom: 100, // Space for FAB
   },
   fabContainer: {
     position: 'absolute',
@@ -230,19 +265,20 @@ const styles = StyleSheet.create({
     right: 0,
     paddingHorizontal: 16,
     paddingBottom: 20,
+    backgroundColor: 'transparent', // Will be set dynamically
   },
   fab: {
-    borderRadius: 25,
+    borderRadius: 12,
     paddingHorizontal: 24,
-    paddingVertical: 12,
-    elevation: 4,
+    paddingVertical: 16,
+    elevation: 8,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: 4,
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
   },
 });
 

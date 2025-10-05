@@ -6,6 +6,8 @@ export type Spacing = {
   lg: number;
   xl: number;
   xxl: number;
+  xxxl: number;
+  huge: number;
 };
 
 export const spacing: Spacing = {
@@ -14,8 +16,10 @@ export const spacing: Spacing = {
   sm: 8,
   md: 12,
   lg: 16,
-  xl: 24,
-  xxl: 32,
+  xl: 20,
+  xxl: 24,
+  xxxl: 32,
+  huge: 48,
 };
 
 

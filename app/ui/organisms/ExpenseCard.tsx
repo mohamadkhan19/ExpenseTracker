@@ -3,6 +3,7 @@ import { View, TouchableOpacity, ViewStyle } from 'react-native';
 import { useTheme } from '../../theme';
 import { Text } from '../atoms/Text';
 import { Expense } from '../../features/expenses/types';
+import { HapticFeedback } from '../../utils/haptic';
 
 interface ExpenseCardProps {
   expense: Expense;
@@ -11,15 +12,23 @@ interface ExpenseCardProps {
 }
 
 export function ExpenseCard({ expense, onPress, onLongPress }: ExpenseCardProps) {
-  const theme = useTheme();
+  const { theme } = useTheme();
   
   const cardStyle: ViewStyle = {
     backgroundColor: theme.colors.card,
-    borderRadius: theme.radii.md,
-    padding: theme.spacing.md,
-    marginBottom: theme.spacing.sm,
+    borderRadius: theme.radii.md, // More subtle rounding like Robinhood
+    padding: theme.spacing.md, // Tighter padding
+    marginBottom: theme.spacing.sm, // Tighter spacing
     borderWidth: 1,
     borderColor: theme.colors.border,
+    elevation: 1, // Subtle shadow
+    shadowColor: theme.colors.text,
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.05,
+    shadowRadius: 1,
   };
 
   const formatAmount = (amount: number) => {
@@ -27,35 +36,56 @@ export function ExpenseCard({ expense, onPress, onLongPress }: ExpenseCardProps)
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString();
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: '2-digit',
+      year: 'numeric',
+    });
   };
 
   const formatCategory = (category: string) => {
     return category.charAt(0).toUpperCase() + category.slice(1);
   };
 
+  const handleLongPress = () => {
+    HapticFeedback.warning();
+    onLongPress?.();
+  };
+
   const CardComponent = onPress ? TouchableOpacity : View;
 
   return (
-    <CardComponent style={cardStyle} onPress={onPress} onLongPress={onLongPress}>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-        <View style={{ flex: 1 }}>
-          <Text variant="lg" weight="semibold" color="text">
-            {formatAmount(expense.amount)}
-          </Text>
-          <Text variant="sm" color="subtext" style={{ marginTop: theme.spacing.xs }}>
-            {expense.description}
-          </Text>
-        </View>
-        <View style={{ alignItems: 'flex-end' }}>
-          <Text variant="sm" weight="medium" color="primary">
-            {formatCategory(expense.category)}
-          </Text>
-          <Text variant="xs" color="subtext" style={{ marginTop: theme.spacing.xs }}>
-            {formatDate(expense.date)}
-          </Text>
-        </View>
-      </View>
+    <CardComponent 
+      style={cardStyle} 
+      onPress={onPress} 
+      onLongPress={handleLongPress}
+      accessibilityRole="button"
+      accessibilityLabel={`Expense: ${expense.description}, ${formatAmount(expense.amount)}, ${formatCategory(expense.category)}, ${formatDate(expense.date)}`}
+      accessibilityHint={onPress ? "Tap to edit expense" : onLongPress ? "Long press to delete expense" : undefined}
+    >
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+            <View style={{ flex: 1 }}>
+              <Text 
+                variant="lg" 
+                weight="semibold" 
+                style={{ color: theme.colors.loss }} // Robinhood-style red for expenses
+              >
+                -{formatAmount(expense.amount)}
+              </Text>
+              <Text variant="sm" color="subtext" style={{ marginTop: theme.spacing.xs }}>
+                {expense.description}
+              </Text>
+            </View>
+            <View style={{ alignItems: 'flex-end' }}>
+              <Text variant="sm" weight="medium" color="neutral">
+                {formatCategory(expense.category)}
+              </Text>
+              <Text variant="xs" color="subtext" style={{ marginTop: theme.spacing.xs }}>
+                {formatDate(expense.date)}
+              </Text>
+            </View>
+          </View>
     </CardComponent>
   );
 }

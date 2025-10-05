@@ -15,7 +15,7 @@ export function Text({
   style,
   ...props 
 }: TextProps) {
-  const theme = useTheme();
+  const { theme } = useTheme();
   
   return (
     <RNText
@@ -27,6 +27,7 @@ export function Text({
         },
         style,
       ]}
+      accessibilityRole="text"
       {...props}
     />
   );

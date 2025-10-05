@@ -10,17 +10,18 @@ interface InputProps extends TextInputProps {
 }
 
 export function Input({ label, error, helperText, style, ...props }: InputProps) {
-  const theme = useTheme();
+  const { theme } = useTheme();
   
   const inputStyle: ViewStyle = {
     borderWidth: 1,
     borderColor: error ? theme.colors.error : theme.colors.border,
-    borderRadius: theme.radii.md,
+    borderRadius: theme.radii.md, // More subtle rounding
     paddingHorizontal: theme.spacing.md,
     paddingVertical: theme.spacing.sm,
     backgroundColor: theme.colors.surface,
     color: theme.colors.text,
     fontSize: theme.fontSizes.md,
+    minHeight: 44, // Slightly smaller like Robinhood
   };
 
   return (
@@ -33,6 +34,9 @@ export function Input({ label, error, helperText, style, ...props }: InputProps)
       <TextInput 
         style={[inputStyle, style]} 
         placeholderTextColor={theme.colors.subtext} 
+        accessibilityLabel={label || 'Text input'}
+        accessibilityHint={error ? `Error: ${error}` : helperText || 'Enter text'}
+        accessibilityRole="text"
         {...props} 
       />
       {error && (

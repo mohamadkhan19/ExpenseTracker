@@ -11,7 +11,7 @@ interface LabeledInputProps {
 }
 
 export function LabeledInput({ label, error, ...inputProps }: LabeledInputProps) {
-  const theme = useTheme();
+  const { theme } = useTheme();
   
   return (
     <View style={{ marginBottom: theme.spacing.md }}>
