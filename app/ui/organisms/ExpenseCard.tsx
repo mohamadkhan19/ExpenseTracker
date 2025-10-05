@@ -36,7 +36,12 @@ export function ExpenseCard({ expense, onPress, onLongPress }: ExpenseCardProps)
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString();
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: '2-digit',
+      year: 'numeric',
+    });
   };
 
   const formatCategory = (category: string) => {
