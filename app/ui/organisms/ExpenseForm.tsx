@@ -5,6 +5,7 @@ import { Text } from '../atoms/Text';
 import { Button } from '../atoms/Button';
 import { Input } from '../atoms/Input';
 import { CategoryDropdown } from '../molecules/CategoryDropdown';
+import { DatePicker } from '../molecules/DatePicker';
 import { ExpenseCategory } from '../../features/expenses/types';
 import { FormData, ValidationError, validateExpenseForm, formatAmount, formatDateForInput } from '../../lib/validation';
 
@@ -123,12 +124,11 @@ export function ExpenseForm({
           <Text variant="sm" weight="medium" color="text" style={styles.label}>
             Date
           </Text>
-          <Input
+          <DatePicker
             value={formData.date}
-            onChangeText={handleDateChange}
-            placeholder="YYYY-MM-DD"
+            onChange={handleDateChange}
+            placeholder="Select date"
             error={getFieldError('date')}
-            helperText="Format: YYYY-MM-DD"
           />
         </View>
 
