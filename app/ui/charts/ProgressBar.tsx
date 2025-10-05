@@ -15,6 +15,8 @@ interface ProgressBarProps {
   warningThreshold?: number; // Percentage at which to show warning color
   criticalThreshold?: number; // Percentage at which to show critical color
   label?: string;
+  accessibilityLabel?: string;
+  accessibilityHint?: string;
 }
 
 const { width: screenWidth } = Dimensions.get('window');
@@ -31,6 +33,8 @@ export function ProgressBar({
   warningThreshold = 80,
   criticalThreshold = 95,
   label,
+  accessibilityLabel,
+  accessibilityHint,
 }: ProgressBarProps) {
   const { theme } = useTheme();
 
@@ -53,8 +57,23 @@ export function ProgressBar({
   const progressColor = getProgressColor();
   const bgColor = backgroundColor || theme.colors.surface;
 
+  // Generate accessibility description
+  const accessibilityDescription = `${percentage.toFixed(1)}% of ${maxValue.toFixed(2)} limit used. ` +
+    `Current value: ${value.toFixed(2)}, remaining: ${Math.max(0, maxValue - value).toFixed(2)}`;
+
   return (
-    <View style={[styles.container, { width }]}>
+    <View 
+      style={[styles.container, { width }]}
+      accessibilityRole="progressbar"
+      accessibilityLabel={accessibilityLabel || `Progress bar showing ${percentage.toFixed(1)}% of limit used`}
+      accessibilityHint={accessibilityHint || 'Shows current spending against set limit'}
+      accessibilityValue={{
+        min: 0,
+        max: maxValue,
+        now: value,
+        text: `${percentage.toFixed(1)}%`,
+      }}
+    >
       {/* Label */}
       {showLabel && label && (
         <View style={styles.labelContainer}>

@@ -12,6 +12,8 @@ interface LineChartProps {
   showLabels?: boolean;
   strokeWidth?: number;
   showDots?: boolean;
+  accessibilityLabel?: string;
+  accessibilityHint?: string;
 }
 
 const { width: screenWidth } = Dimensions.get('window');
@@ -24,12 +26,19 @@ export function LineChart({
   showLabels = true,
   strokeWidth = 2,
   showDots = true,
+  accessibilityLabel = 'Line chart showing spending trends over time',
+  accessibilityHint = 'Swipe to explore different time periods',
 }: LineChartProps) {
   const { theme } = useTheme();
 
   if (!data.datasets.length || !data.labels.length) {
     return (
-      <View style={[styles.container, { width, height }]}>
+      <View 
+        style={[styles.container, { width, height }]}
+        accessibilityRole="image"
+        accessibilityLabel="No data available for line chart"
+        accessibilityHint="Add expenses to see spending trends"
+      >
         <View style={styles.emptyState}>
           {/* Empty state will be handled by parent */}
         </View>
@@ -64,8 +73,19 @@ export function LineChart({
     return { y, value };
   }) : [];
 
+  // Generate accessibility description
+  const accessibilityDescription = `Line chart showing ${data.labels.length} data points. ` +
+    `Highest value: $${maxValue.toFixed(2)}, lowest value: $${minValue.toFixed(2)}. ` +
+    `Latest value: $${points[points.length - 1]?.value.toFixed(2) || '0.00'}`;
+
   return (
-    <View style={[styles.container, { width, height }]}>
+    <View 
+      style={[styles.container, { width, height }]}
+      accessibilityRole="image"
+      accessibilityLabel={accessibilityLabel}
+      accessibilityHint={accessibilityHint}
+      accessibilityDescription={accessibilityDescription}
+    >
       <Svg width={width} height={height}>
         {/* Grid lines */}
         {showGrid && gridLines.map((line, index) => (

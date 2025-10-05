@@ -10,6 +10,8 @@ interface PieChartProps {
   showLabels?: boolean;
   showLegend?: boolean;
   innerRadius?: number;
+  accessibilityLabel?: string;
+  accessibilityHint?: string;
 }
 
 const { width: screenWidth } = Dimensions.get('window');
@@ -20,12 +22,19 @@ export function PieChart({
   showLabels = true,
   showLegend = true,
   innerRadius = 0,
+  accessibilityLabel = 'Pie chart showing spending breakdown by category',
+  accessibilityHint = 'Categories are displayed with different colors and percentages',
 }: PieChartProps) {
   const { theme } = useTheme();
 
   if (!data.length) {
     return (
-      <View style={[styles.container, { width: size, height: size }]}>
+      <View 
+        style={[styles.container, { width: size, height: size }]}
+        accessibilityRole="image"
+        accessibilityLabel="No data available for pie chart"
+        accessibilityHint="Add expenses to see category breakdown"
+      >
         <View style={styles.emptyState}>
           {/* Empty state will be handled by parent */}
         </View>
@@ -120,8 +129,18 @@ export function PieChart({
     return { x, y, ...slice };
   });
 
+  // Generate accessibility description
+  const accessibilityDescription = `Pie chart with ${data.length} categories. ` +
+    data.map(item => `${item.name}: $${item.value.toFixed(2)} (${item.percentage.toFixed(1)}%)`).join(', ');
+
   return (
-    <View style={[styles.container, { width: size, height: size }]}>
+    <View 
+      style={[styles.container, { width: size, height: size }]}
+      accessibilityRole="image"
+      accessibilityLabel={accessibilityLabel}
+      accessibilityHint={accessibilityHint}
+      accessibilityDescription={accessibilityDescription}
+    >
       <Svg width={size} height={size}>
         {/* Pie slices */}
         {slices.map((slice, index) => (
