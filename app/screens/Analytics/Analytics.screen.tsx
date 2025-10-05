@@ -4,6 +4,9 @@ import { ScreenContainer } from '../../ui/primitives/ScreenContainer';
 import { Text } from '../../ui/atoms/Text';
 import { Button } from '../../ui/atoms/Button';
 import { useTheme } from '../../theme';
+import ChartsScreen from './Charts.screen';
+import LimitsScreen from './Limits.screen';
+import TrendsScreen from './Trends.screen';
 
 export default function AnalyticsScreen() {
   const { theme } = useTheme();
@@ -55,76 +58,52 @@ export default function AnalyticsScreen() {
                 variant="outline"
                 size="sm"
                 style={styles.button}
+                onPress={() => setActiveTab('limits')}
+              />
+            </View>
+
+            <View style={[styles.card, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
+              <Text variant="md" weight="medium" color="text" style={styles.cardTitle}>
+                📈 Charts & Visualizations
+              </Text>
+              <Text variant="sm" color="subtext" style={styles.cardText}>
+                View detailed charts and spending patterns
+              </Text>
+              <Button
+                title="View Charts"
+                variant="outline"
+                size="sm"
+                style={styles.button}
+                onPress={() => setActiveTab('charts')}
+              />
+            </View>
+
+            <View style={[styles.card, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
+              <Text variant="md" weight="medium" color="text" style={styles.cardTitle}>
+                📊 Trends & Patterns
+              </Text>
+              <Text variant="sm" color="subtext" style={styles.cardText}>
+                Analyze spending behavior over time
+              </Text>
+              <Button
+                title="View Trends"
+                variant="outline"
+                size="sm"
+                style={styles.button}
+                onPress={() => setActiveTab('trends')}
               />
             </View>
           </View>
         );
       
       case 'charts':
-        return (
-          <View style={styles.content}>
-            <Text variant="lg" weight="semibold" color="text" style={styles.sectionTitle}>
-              Chart Visualizations
-            </Text>
-            <Text variant="md" color="subtext" style={styles.description}>
-              Visual breakdown of your expenses by category and time.
-            </Text>
-            
-            <View style={[styles.placeholder, { backgroundColor: theme.colors.surface, borderColor: theme.colors.border }]}>
-              <Text variant="lg" style={styles.placeholderIcon}>📈</Text>
-              <Text variant="md" color="subtext" style={styles.placeholderText}>
-                Charts will be implemented here
-              </Text>
-              <Text variant="sm" color="subtext" style={styles.placeholderSubtext}>
-                Line charts, pie charts, and bar charts
-              </Text>
-            </View>
-          </View>
-        );
+        return <ChartsScreen />;
       
       case 'limits':
-        return (
-          <View style={styles.content}>
-            <Text variant="lg" weight="semibold" color="text" style={styles.sectionTitle}>
-              Spending Limits
-            </Text>
-            <Text variant="md" color="subtext" style={styles.description}>
-              Set and manage spending limits for categories and overall budget.
-            </Text>
-            
-            <View style={[styles.placeholder, { backgroundColor: theme.colors.surface, borderColor: theme.colors.border }]}>
-              <Text variant="lg" style={styles.placeholderIcon}>🚨</Text>
-              <Text variant="md" color="subtext" style={styles.placeholderText}>
-                Limits management will be implemented here
-              </Text>
-              <Text variant="sm" color="subtext" style={styles.placeholderSubtext}>
-                Set category limits and monthly budgets
-              </Text>
-            </View>
-          </View>
-        );
+        return <LimitsScreen />;
       
       case 'trends':
-        return (
-          <View style={styles.content}>
-            <Text variant="lg" weight="semibold" color="text" style={styles.sectionTitle}>
-              Trends & Patterns
-            </Text>
-            <Text variant="md" color="subtext" style={styles.description}>
-              Analyze spending patterns and identify trends over time.
-            </Text>
-            
-            <View style={[styles.placeholder, { backgroundColor: theme.colors.surface, borderColor: theme.colors.border }]}>
-              <Text variant="lg" style={styles.placeholderIcon}>📊</Text>
-              <Text variant="md" color="subtext" style={styles.placeholderText}>
-                Trends analysis will be implemented here
-              </Text>
-              <Text variant="sm" color="subtext" style={styles.placeholderSubtext}>
-                Monthly comparisons and spending patterns
-              </Text>
-            </View>
-          </View>
-        );
+        return <TrendsScreen />;
       
       default:
         return null;
@@ -201,22 +180,5 @@ const styles = StyleSheet.create({
   button: {
     marginTop: 12,
     alignSelf: 'flex-start',
-  },
-  placeholder: {
-    padding: 32,
-    borderRadius: 8,
-    borderWidth: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  placeholderIcon: {
-    marginBottom: 16,
-  },
-  placeholderText: {
-    textAlign: 'center',
-    marginBottom: 8,
-  },
-  placeholderSubtext: {
-    textAlign: 'center',
   },
 });
