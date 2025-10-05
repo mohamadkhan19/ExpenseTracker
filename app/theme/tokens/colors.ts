@@ -12,34 +12,44 @@ export type Colors = {
   error: string;
   success: string;
   warning: string;
+  // Robinhood-specific colors
+  gain: string;
+  loss: string;
+  neutral: string;
 };
 
 export const lightColors: Colors = {
   background: '#FFFFFF',
-  surface: '#F7F7F9',
-  text: '#111827',
+  surface: '#F8F9FA',
+  text: '#1A1A1A',
   subtext: '#6B7280',
-  primary: '#2563EB',
+  primary: '#00C805', // Robinhood green
   primaryContrastText: '#FFFFFF',
   card: '#FFFFFF',
   border: '#E5E7EB',
-  error: '#DC2626',
-  success: '#16A34A',
-  warning: '#D97706',
+  error: '#EF4444', // Red for losses
+  success: '#00C805', // Green for gains
+  warning: '#F59E0B',
+  gain: '#00C805', // Robinhood green
+  loss: '#EF4444', // Red
+  neutral: '#6B7280', // Gray
 };
 
 export const darkColors: Colors = {
-  background: '#0B1220',
-  surface: '#111827',
-  text: '#F3F4F6',
+  background: '#000000',
+  surface: '#0A0A0A',
+  text: '#FFFFFF',
   subtext: '#9CA3AF',
-  primary: '#60A5FA',
-  primaryContrastText: '#0B1220',
-  card: '#111827',
-  border: '#1F2937',
-  error: '#F87171',
-  success: '#34D399',
+  primary: '#00C805', // Robinhood green
+  primaryContrastText: '#000000',
+  card: '#1A1A1A',
+  border: '#374151',
+  error: '#EF4444', // Red for losses
+  success: '#00C805', // Green for gains
   warning: '#F59E0B',
+  gain: '#00C805', // Robinhood green
+  loss: '#EF4444', // Red
+  neutral: '#9CA3AF', // Gray
 };
 
 

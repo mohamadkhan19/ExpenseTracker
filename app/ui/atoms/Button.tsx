@@ -24,20 +24,20 @@ export function Button({
   
   const getButtonStyle = (): ViewStyle => {
       const baseStyle: ViewStyle = {
-        paddingHorizontal: theme.spacing[size === 'sm' ? 'lg' : size === 'lg' ? 'xxl' : 'xl'],
-        paddingVertical: theme.spacing[size === 'sm' ? 'md' : size === 'lg' ? 'xl' : 'lg'],
-        borderRadius: theme.radii.lg,
+        paddingHorizontal: theme.spacing[size === 'sm' ? 'md' : size === 'lg' ? 'xl' : 'lg'],
+        paddingVertical: theme.spacing[size === 'sm' ? 'sm' : size === 'lg' ? 'md' : 'sm'],
+        borderRadius: theme.radii.md, // More subtle rounding like Robinhood
         alignItems: 'center',
         justifyContent: 'center',
-        minHeight: 48, // Minimum touch target size
-        elevation: 2,
+        minHeight: 44, // Slightly smaller touch target like Robinhood
+        elevation: 1, // Subtle shadow
         shadowColor: theme.colors.text,
         shadowOffset: {
           width: 0,
           height: 1,
         },
-        shadowOpacity: 0.1,
-        shadowRadius: 2,
+        shadowOpacity: 0.05,
+        shadowRadius: 1,
       };
 
     switch (variant) {

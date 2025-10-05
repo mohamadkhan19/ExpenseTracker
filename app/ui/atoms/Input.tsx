@@ -15,13 +15,13 @@ export function Input({ label, error, helperText, style, ...props }: InputProps)
   const inputStyle: ViewStyle = {
     borderWidth: 1,
     borderColor: error ? theme.colors.error : theme.colors.border,
-    borderRadius: theme.radii.lg,
-    paddingHorizontal: theme.spacing.lg,
-    paddingVertical: theme.spacing.md,
+    borderRadius: theme.radii.md, // More subtle rounding
+    paddingHorizontal: theme.spacing.md,
+    paddingVertical: theme.spacing.sm,
     backgroundColor: theme.colors.surface,
     color: theme.colors.text,
     fontSize: theme.fontSizes.md,
-    minHeight: 48, // Minimum touch target size
+    minHeight: 44, // Slightly smaller like Robinhood
   };
 
   return (

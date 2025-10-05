@@ -159,8 +159,12 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
               Expenses
             </Text>
           </TouchableOpacity>
-          <Text variant="lg" weight="semibold" color="primary">
-            Total: ${totalAmount.toFixed(2)}
+          <Text 
+            variant="lg" 
+            weight="semibold" 
+            style={{ color: theme.colors.loss }} // Robinhood-style red for total expenses
+          >
+            Total: -${totalAmount.toFixed(2)}
           </Text>
         </View>
         <View style={styles.headerRight}>
