@@ -1,13 +1,11 @@
 import React from 'react';
 import { render, act } from '@testing-library/react-native';
-import { useColorScheme } from 'react-native';
 import { ThemeProvider, useTheme } from '../../app/theme';
 import { AsyncStorageClient } from '../../app/services/storage/asyncStorageClient';
 import { STORAGE_KEYS } from '../../app/services/storage/keys';
 
 // Mock dependencies
 jest.mock('react-native', () => ({
-  ...jest.requireActual('react-native'),
   useColorScheme: jest.fn(),
 }));
 
@@ -18,7 +16,7 @@ jest.mock('../../app/services/storage/asyncStorageClient', () => ({
   },
 }));
 
-const mockUseColorScheme = useColorScheme as jest.MockedFunction<typeof useColorScheme>;
+const mockUseColorScheme = require('react-native').useColorScheme as jest.MockedFunction<any>;
 const mockAsyncStorageClient = AsyncStorageClient as jest.Mocked<typeof AsyncStorageClient>;
 
 // Test component to access theme context

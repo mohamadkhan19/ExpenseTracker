@@ -5,13 +5,6 @@ jest.mock('@react-native-async-storage/async-storage', () =>
   require('@react-native-async-storage/async-storage/jest/async-storage-mock')
 );
 
-// Mock react-native-reanimated
-jest.mock('react-native-reanimated', () => {
-  const Reanimated = require('react-native-reanimated/mock');
-  Reanimated.default.call = () => {};
-  return Reanimated;
-});
-
 // Mock react-native-haptic-feedback
 jest.mock('react-native-haptic-feedback', () => ({
   trigger: jest.fn(),
@@ -52,5 +45,3 @@ jest.mock('react-native-svg', () => {
   };
 });
 
-// Silence the warning: Animated: `useNativeDriver` is not supported
-jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper');

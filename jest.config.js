@@ -12,6 +12,9 @@ module.exports = {
   ],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   transformIgnorePatterns: [
-    'node_modules/(?!(react-native|@react-native|@react-navigation|react-native-svg|react-native-reanimated|react-native-gesture-handler|@react-native-async-storage)/)',
+    'node_modules/(?!(react-native|@react-native|@react-navigation|react-native-svg|react-native-reanimated|react-native-gesture-handler|@react-native-async-storage|@reduxjs|react-redux|immer)/)',
   ],
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/app/$1',
+  },
 };
