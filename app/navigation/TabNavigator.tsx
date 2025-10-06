@@ -3,7 +3,8 @@ import { View, Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useTheme } from '../theme';
 import ExpensesListScreen from '../screens/ExpensesList/ExpensesList.screen';
-import AnalyticsScreen from '../screens/Analytics/Analytics.screen';
+import ChartsScreen from '../screens/Analytics/Charts.screen';
+import LimitsScreen from '../screens/Analytics/Limits.screen';
 import { RootTabParamList } from './types';
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
@@ -52,13 +53,24 @@ export default function TabNavigator() {
         }}
       />
       <Tab.Screen
-        name="Analytics"
-        component={AnalyticsScreen}
+        name="Charts"
+        component={ChartsScreen}
         options={{
-          title: 'Analytics',
+          title: 'Charts',
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
             <TabIcon name="chart-bar" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Limits"
+        component={LimitsScreen}
+        options={{
+          title: 'Limits',
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <TabIcon name="limit" size={size} color={color} />
           ),
         }}
       />
@@ -74,6 +86,8 @@ function TabIcon({ name, size, color }: { name: string; size: number; color: str
         return '💰';
       case 'chart-bar':
         return '📊';
+      case 'limit':
+        return '🚨';
       default:
         return '📱';
     }

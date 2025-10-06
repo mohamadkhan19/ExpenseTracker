@@ -6,7 +6,8 @@ export type RootStackParamList = {
 
 export type RootTabParamList = {
   Expenses: undefined;
-  Analytics: undefined;
+  Charts: undefined;
+  Limits: undefined;
 };
 
 
