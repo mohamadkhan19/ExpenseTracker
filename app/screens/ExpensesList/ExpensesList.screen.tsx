@@ -262,7 +262,7 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
       <Modal
         visible={addEditModalVisible}
         animationType="slide"
-        presentationStyle="pageSheet"
+        transparent={false}
         onRequestClose={handleFormCancel}
       >
         {console.log('Modal visible:', addEditModalVisible, 'Editing expense:', editingExpense)}
