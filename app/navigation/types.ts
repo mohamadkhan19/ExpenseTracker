@@ -4,4 +4,10 @@ export type RootStackParamList = {
   ExpenseEdit: { id?: string } | undefined;
 };
 
+export type RootTabParamList = {
+  Expenses: undefined;
+  Charts: undefined;
+  Limits: undefined;
+};
+
 
