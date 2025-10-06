@@ -6,107 +6,26 @@ import { Button } from '../../ui/atoms/Button';
 import { useTheme } from '../../theme';
 import ChartsScreen from './Charts.screen';
 import LimitsScreen from './Limits.screen';
-import TrendsScreen from './Trends.screen';
 
 export default function AnalyticsScreen() {
   const { theme } = useTheme();
-  const [activeTab, setActiveTab] = useState<'overview' | 'charts' | 'limits' | 'trends'>('overview');
+  const [activeTab, setActiveTab] = useState<'charts' | 'limits'>('charts');
 
   const tabs = [
-    { id: 'overview', title: 'Overview' },
     { id: 'charts', title: 'Charts' },
     { id: 'limits', title: 'Limits' },
-    { id: 'trends', title: 'Trends' },
   ] as const;
 
   const renderTabContent = () => {
     switch (activeTab) {
-      case 'overview':
-        return (
-          <View style={styles.content}>
-            <Text variant="lg" weight="semibold" color="text" style={styles.sectionTitle}>
-              Analytics Overview
-            </Text>
-            <Text variant="md" color="subtext" style={styles.description}>
-              Comprehensive insights into your spending patterns and financial trends.
-            </Text>
-            
-            <View style={[styles.card, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
-              <Text variant="md" weight="medium" color="text" style={styles.cardTitle}>
-                📊 Quick Stats
-              </Text>
-              <Text variant="sm" color="subtext" style={styles.cardText}>
-                Total Expenses: $0.00
-              </Text>
-              <Text variant="sm" color="subtext" style={styles.cardText}>
-                This Month: $0.00
-              </Text>
-              <Text variant="sm" color="subtext" style={styles.cardText}>
-                Categories: 0
-              </Text>
-            </View>
-
-            <View style={[styles.card, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
-              <Text variant="md" weight="medium" color="text" style={styles.cardTitle}>
-                🎯 Spending Limits
-              </Text>
-              <Text variant="sm" color="subtext" style={styles.cardText}>
-                No limits set yet
-              </Text>
-              <Button
-                title="Set Limits"
-                variant="outline"
-                size="sm"
-                style={styles.button}
-                onPress={() => setActiveTab('limits')}
-              />
-            </View>
-
-            <View style={[styles.card, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
-              <Text variant="md" weight="medium" color="text" style={styles.cardTitle}>
-                📈 Charts & Visualizations
-              </Text>
-              <Text variant="sm" color="subtext" style={styles.cardText}>
-                View detailed charts and spending patterns
-              </Text>
-              <Button
-                title="View Charts"
-                variant="outline"
-                size="sm"
-                style={styles.button}
-                onPress={() => setActiveTab('charts')}
-              />
-            </View>
-
-            <View style={[styles.card, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
-              <Text variant="md" weight="medium" color="text" style={styles.cardTitle}>
-                📊 Trends & Patterns
-              </Text>
-              <Text variant="sm" color="subtext" style={styles.cardText}>
-                Analyze spending behavior over time
-              </Text>
-              <Button
-                title="View Trends"
-                variant="outline"
-                size="sm"
-                style={styles.button}
-                onPress={() => setActiveTab('trends')}
-              />
-            </View>
-          </View>
-        );
-      
       case 'charts':
         return <ChartsScreen />;
       
       case 'limits':
         return <LimitsScreen />;
       
-      case 'trends':
-        return <TrendsScreen />;
-      
       default:
-        return null;
+        return <ChartsScreen />;
     }
   };
 
