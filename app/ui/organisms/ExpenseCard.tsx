@@ -96,6 +96,6 @@ export function ExpenseCard({ expense, onPress, onLongPress }: ExpenseCardProps)
               </Text>
             </View>
           </View>
-    </CardComponent>
+    </TouchableOpacity>
   );
 }
