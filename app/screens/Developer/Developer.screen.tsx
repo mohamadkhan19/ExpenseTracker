@@ -95,23 +95,6 @@ export function DeveloperScreen({ onClose }: DeveloperScreenProps) {
           </Text>
         </View>
 
-        <View style={styles.section}>
-          <Text variant="lg" weight="semibold" color="text" style={styles.sectionTitle}>
-            App Info
-          </Text>
-          <View style={styles.infoCard}>
-            <Text variant="sm" color="text" style={styles.infoText}>
-              Current Theme: {themeMode === 'system' ? 'System' : themeMode === 'dark' ? 'Dark' : 'Light'}
-            </Text>
-            <Text variant="sm" color="text" style={styles.infoText}>
-              Version: 1.0.0
-            </Text>
-            <Text variant="sm" color="text" style={styles.infoText}>
-              Build: Task 6 Analytics
-            </Text>
-          </View>
-        </View>
-
         <View style={styles.footer}>
           <Button
             title="Close Developer Screen"
