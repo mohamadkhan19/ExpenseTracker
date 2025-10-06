@@ -48,6 +48,7 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
     handleSortChange,
     handleCategoryFilter,
     clearFilters,
+    refetch,
   } = useExpensesList();
 
   const { handleSubmit: handleAddExpense, isLoading: isAdding } = useExpenseEdit();
@@ -112,8 +113,10 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
     if (result.success) {
       setAddEditModalVisible(false);
       setEditingExpense(null);
+      // Manually refetch the data to ensure UI updates
+      refetch();
     }
-  }, [editingExpense, handleAddExpense, handleEditExpense]);
+  }, [editingExpense, handleAddExpense, handleEditExpense, refetch]);
 
   const handleFormCancel = useCallback(() => {
     setAddEditModalVisible(false);
@@ -130,13 +133,17 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
     if (!expenseToDelete) return;
 
     try {
+      console.log('Deleting expense:', expenseToDelete.id);
       await deleteExpense(expenseToDelete.id).unwrap();
+      console.log('Expense deleted successfully');
       setDeleteModalVisible(false);
       setExpenseToDelete(null);
+      // Manually refetch the data to ensure UI updates
+      refetch();
     } catch (error) {
       console.error('Failed to delete expense:', error);
     }
-  }, [expenseToDelete, deleteExpense]);
+  }, [expenseToDelete, deleteExpense, refetch]);
 
   const cancelDelete = useCallback(() => {
     setDeleteModalVisible(false);

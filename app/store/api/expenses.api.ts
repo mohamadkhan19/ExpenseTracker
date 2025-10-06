@@ -49,7 +49,7 @@ export const expensesApi = baseApi.injectEndpoints({
           return { error: { status: 'FETCH_ERROR', error: String(error) } };
         }
       },
-      invalidatesTags: (result, error, { id }) => [{ type: 'Expense', id }],
+      invalidatesTags: ['Expense'],
     }),
     
     deleteExpense: builder.mutation<boolean, string>({
@@ -61,7 +61,7 @@ export const expensesApi = baseApi.injectEndpoints({
           return { error: { status: 'FETCH_ERROR', error: String(error) } };
         }
       },
-      invalidatesTags: (result, error, id) => [{ type: 'Expense', id }],
+      invalidatesTags: ['Expense'],
     }),
   }),
 });
