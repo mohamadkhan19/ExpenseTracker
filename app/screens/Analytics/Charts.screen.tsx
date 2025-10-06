@@ -55,18 +55,6 @@ export default function ChartsScreen() {
     }));
   }, [analyticsData]);
 
-  const barChartData = useMemo(() => {
-    if (!analyticsData?.spendingPatterns.length) return null;
-
-    return {
-      labels: analyticsData.spendingPatterns.map(pattern => pattern.dayOfWeek.slice(0, 3)),
-      datasets: [{
-        data: analyticsData.spendingPatterns.map(pattern => pattern.averageAmount),
-        color: theme.colors.primary,
-      }],
-    };
-  }, [analyticsData, theme.colors.primary]);
-
   // Get category color
   function getCategoryColor(category: string, index: number): string {
     const colors = [
@@ -218,56 +206,6 @@ export default function ChartsScreen() {
           )}
         </ChartContainer>
 
-        {/* Spending Patterns Bar Chart */}
-        <ChartContainer
-          title="Spending Patterns"
-          subtitle="Average spending by day of week"
-          emptyMessage="No spending pattern data available"
-        >
-          {barChartData && (
-            <BarChart
-              data={barChartData}
-              width={screenWidth - 64}
-              height={200}
-              showGrid={true}
-              showLabels={true}
-              barWidth={40}
-              spacing={8}
-            />
-          )}
-        </ChartContainer>
-
-        {/* Top Categories */}
-        <ChartContainer
-          title="Top Categories"
-          subtitle="Highest spending categories"
-          emptyMessage="No category data available"
-        >
-          {analyticsData?.topCategories.map((category, index) => (
-            <View key={category.category} style={styles.categoryItem}>
-              <View style={styles.categoryLeft}>
-                <View style={[styles.categoryColor, { backgroundColor: getCategoryColor(category.category, index) }]} />
-                <View style={styles.categoryInfo}>
-                  <Text variant="md" weight="medium" color="text">
-                    {category.category.charAt(0).toUpperCase() + category.category.slice(1)}
-                  </Text>
-                  <Text variant="sm" color="subtext">
-                    {category.count} transactions
-                  </Text>
-                </View>
-              </View>
-              <View style={styles.categoryRight}>
-                <Text variant="md" weight="semibold" color="text">
-                  ${category.amount.toFixed(2)}
-                </Text>
-                <Text variant="sm" color="subtext">
-                  {category.percentage.toFixed(1)}%
-                </Text>
-              </View>
-            </View>
-          ))}
-        </ChartContainer>
-
         {/* Bottom padding for tab bar */}
         <View style={styles.bottomPadding} />
       </ScrollView>
@@ -318,31 +256,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.02)',
     borderRadius: 8,
     marginBottom: 8,
-  },
-  categoryItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(0,0,0,0.05)',
-  },
-  categoryLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-  },
-  categoryColor: {
-    width: 12,
-    height: 12,
-    borderRadius: 6,
-    marginRight: 12,
-  },
-  categoryInfo: {
-    flex: 1,
-  },
-  categoryRight: {
-    alignItems: 'flex-end',
   },
   bottomPadding: {
     height: 100,
