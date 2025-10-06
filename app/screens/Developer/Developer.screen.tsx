@@ -4,8 +4,9 @@ import { ScreenContainer } from '../../ui/primitives/ScreenContainer';
 import { Text } from '../../ui/atoms/Text';
 import { Button } from '../../ui/atoms/Button';
 import { useTheme } from '../../theme';
-import { useCreateExpenseMutation } from '../../store/api/expenses.api';
+import { useCreateExpenseMutation, useGetExpensesQuery } from '../../store/api/expenses.api';
 import { ExpenseCategory } from '../../features/expenses/types';
+import { AsyncStorageClient } from '../../services/storage/asyncStorageClient';
 
 interface DeveloperScreenProps {
   onClose: () => void;
@@ -14,7 +15,9 @@ interface DeveloperScreenProps {
 export function DeveloperScreen({ onClose }: DeveloperScreenProps) {
   const { theme, themeMode, toggleTheme: toggleThemeMode } = useTheme();
   const [createExpense] = useCreateExpenseMutation();
+  const { refetch: refetchExpenses } = useGetExpensesQuery();
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isResetting, setIsResetting] = useState(false);
 
   const generateRandomExpense = async () => {
     setIsGenerating(true);
@@ -55,6 +58,39 @@ export function DeveloperScreen({ onClose }: DeveloperScreenProps) {
     toggleThemeMode();
   };
 
+  const resetApp = async () => {
+    Alert.alert(
+      'Reset App',
+      'This will delete ALL data including expenses, limits, and settings. This action cannot be undone.',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Reset',
+          style: 'destructive',
+          onPress: async () => {
+            setIsResetting(true);
+            try {
+              // Clear all AsyncStorage data
+              await AsyncStorageClient.clear();
+              
+              // Refetch expenses to update the UI
+              await refetchExpenses();
+              
+              Alert.alert('Success', 'App has been reset to initial state!');
+            } catch (error) {
+              Alert.alert('Error', 'Failed to reset app data');
+            } finally {
+              setIsResetting(false);
+            }
+          },
+        },
+      ]
+    );
+  };
+
   return (
     <ScreenContainer>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
@@ -92,6 +128,22 @@ export function DeveloperScreen({ onClose }: DeveloperScreenProps) {
           />
           <Text variant="xs" color="subtext" style={styles.helperText}>
             This will add 10 random expenses with various categories and amounts for testing purposes.
+          </Text>
+        </View>
+
+        <View style={styles.section}>
+          <Text variant="lg" weight="semibold" color="text" style={styles.sectionTitle}>
+            App Management
+          </Text>
+          <Button
+            title={isResetting ? "Resetting..." : "Reset App"}
+            variant="outline"
+            onPress={resetApp}
+            disabled={isResetting}
+            style={[styles.button, { borderColor: theme.colors.error }]}
+          />
+          <Text variant="xs" color="subtext" style={styles.helperText}>
+            This will delete all data and reset the app to its initial state.
           </Text>
         </View>
 

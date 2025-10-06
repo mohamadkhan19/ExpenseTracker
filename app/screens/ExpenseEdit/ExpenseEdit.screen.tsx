@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import { Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { ScreenContainer } from '../../ui/primitives/ScreenContainer';
 import { ExpenseForm } from '../../ui/organisms/ExpenseForm';
 import { useExpenseEdit } from './useExpenseEdit.hook';
@@ -11,6 +12,7 @@ interface AddExpenseScreenProps {
 }
 
 export function AddExpenseScreen({ onSuccess, onCancel }: AddExpenseScreenProps) {
+  const navigation = useNavigation();
   const { handleSubmit, isLoading } = useExpenseEdit();
 
   const handleFormSubmit = useCallback(async (data: FormData) => {
@@ -18,12 +20,18 @@ export function AddExpenseScreen({ onSuccess, onCancel }: AddExpenseScreenProps)
     
     if (result.success) {
       Alert.alert('Success', 'Expense added successfully!', [
-        { text: 'OK', onPress: onSuccess }
+        { text: 'OK', onPress: () => {
+          if (onSuccess) {
+            onSuccess();
+          } else {
+            navigation.goBack();
+          }
+        }}
       ]);
     } else {
       Alert.alert('Error', result.error || 'Failed to add expense. Please try again.');
     }
-  }, [handleSubmit, onSuccess]);
+  }, [handleSubmit, onSuccess, navigation]);
 
   const handleCancel = useCallback(() => {
     if (onCancel) {
@@ -34,11 +42,11 @@ export function AddExpenseScreen({ onSuccess, onCancel }: AddExpenseScreenProps)
         'Are you sure you want to cancel? Your changes will be lost.',
         [
           { text: 'Keep Editing', style: 'cancel' },
-          { text: 'Cancel', style: 'destructive', onPress: () => {} }
+          { text: 'Cancel', style: 'destructive', onPress: () => navigation.goBack() }
         ]
       );
     }
-  }, [onCancel]);
+  }, [onCancel, navigation]);
 
   return (
     <ScreenContainer>

@@ -4,7 +4,7 @@ import { Expense, ExpenseCategory } from '../../features/expenses/types';
 import { sortExpenses, filterExpensesByCategory, SortOption } from '../../features/expenses/utils';
 
 export function useExpensesList() {
-  const { data: expenses = [], isLoading, error } = useGetExpensesQuery();
+  const { data: expenses = [], isLoading, error, refetch } = useGetExpensesQuery();
   const [sortBy, setSortBy] = useState<SortOption>('date-desc');
   const [filterCategory, setFilterCategory] = useState<ExpenseCategory | 'all'>('all');
 
@@ -41,5 +41,6 @@ export function useExpensesList() {
     handleSortChange,
     handleCategoryFilter,
     clearFilters,
+    refetch,
   };
 }

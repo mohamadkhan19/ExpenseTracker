@@ -1,5 +1,5 @@
-import React, { memo, useMemo, useCallback, useState } from 'react';
-import { FlatList, View, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { memo, useMemo, useCallback, useState, useEffect } from 'react';
+import { FlatList, View, StyleSheet, TouchableOpacity, Modal } from 'react-native';
 import { ScreenContainer } from '../../ui/primitives/ScreenContainer';
 import { ExpenseCard } from '../../ui/organisms/ExpenseCard';
 import { Text } from '../../ui/atoms/Text';
@@ -10,10 +10,13 @@ import { EmptyState } from '../../ui/feedback/EmptyState';
 import { ErrorState } from '../../ui/feedback/ErrorState';
 import { DeleteConfirmationModal } from '../../ui/feedback/DeleteConfirmationModal';
 import { DeveloperScreen } from '../Developer/Developer.screen';
+import { ExpenseForm } from '../../ui/organisms/ExpenseForm';
 import { useExpensesList } from './useExpensesList.hook';
 import { useDeleteExpenseMutation } from '../../store/api/expenses.api';
 import { Expense, ExpenseCategory } from '../../features/expenses/types';
 import { useTheme } from '../../theme';
+import { FormData } from '../../lib/validation';
+import { useExpenseEdit } from '../ExpenseEdit/useExpenseEdit.hook';
 
 const ExpenseItem = memo(({ expense, onPress, onLongPress }: { expense: Expense; onPress?: () => void; onLongPress?: () => void }) => (
   <ExpenseCard expense={expense} onPress={onPress} onLongPress={onLongPress} />
@@ -32,9 +35,13 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
   const [expenseToDelete, setExpenseToDelete] = useState<Expense | null>(null);
   const [developerScreenVisible, setDeveloperScreenVisible] = useState(false);
   const [tapCount, setTapCount] = useState(0);
+  const [addEditModalVisible, setAddEditModalVisible] = useState(false);
+  const [editingExpense, setEditingExpense] = useState<Expense | null>(null);
+  const [pendingEditId, setPendingEditId] = useState<string | null>(null);
   
   const {
     expenses,
+    allExpenses,
     isLoading,
     error,
     sortBy,
@@ -43,17 +50,54 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
     handleSortChange,
     handleCategoryFilter,
     clearFilters,
+    refetch,
   } = useExpensesList();
 
+  const { handleSubmit: handleExpenseSubmit, isLoading: isSubmitting } = useExpenseEdit(editingExpense?.id);
+
   const [deleteExpense, { isLoading: isDeleting }] = useDeleteExpenseMutation();
+
+  // Debug modal state changes
+  useEffect(() => {
+    console.log('Modal state changed - visible:', addEditModalVisible, 'editing:', editingExpense?.id);
+  }, [addEditModalVisible, editingExpense]);
+
+  // Debug app initialization and reset state
+  useEffect(() => {
+    console.log('App initialized - expenses count:', allExpenses.length);
+    console.log('Modal state on init - visible:', addEditModalVisible, 'editing:', editingExpense?.id);
+    
+    // Reset modal state on app initialization to ensure clean state
+    setAddEditModalVisible(false);
+    setEditingExpense(null);
+    setPendingEditId(null);
+    console.log('Modal state reset on app init');
+  }, []); // Run once on mount
+
+  // Handle pending edit when expenses load
+  useEffect(() => {
+    if (pendingEditId && allExpenses.length > 0 && !isLoading) {
+      console.log('Processing pending edit for:', pendingEditId);
+      const expense = allExpenses.find(e => e.id === pendingEditId);
+      if (expense) {
+        console.log('Found pending expense:', expense);
+        setEditingExpense(expense);
+        setAddEditModalVisible(true);
+        setPendingEditId(null);
+      } else {
+        console.log('Pending expense not found');
+        setPendingEditId(null);
+      }
+    }
+  }, [pendingEditId, allExpenses, isLoading]);
 
   const renderExpense = useCallback(({ item }: { item: Expense }) => (
     <ExpenseItem 
       expense={item} 
-      onPress={() => handleEditExpense(item.id)}
+      onPress={() => handleEditExpensePress(item.id)}
       onLongPress={() => handleDeleteExpense(item)}
     />
-  ), [handleEditExpense, handleDeleteExpense]);
+  ), [handleEditExpensePress, handleDeleteExpense]);
 
   const keyExtractor = useCallback((item: Expense) => item.id, []);
 
@@ -66,27 +110,70 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
     window.location.reload();
   }, []);
 
-  const handleAddExpense = useCallback(() => {
+  const handleAddExpensePress = useCallback(() => {
+    console.log('Add expense button pressed');
     if (onAddExpense) {
       onAddExpense();
     } else {
-      console.log('Add expense pressed');
+      setEditingExpense(null);
+      setAddEditModalVisible(true);
+      console.log('Add modal should be visible now');
     }
   }, [onAddExpense]);
 
-  const handleEditExpense = useCallback((expenseId: string) => {
+  const handleEditExpensePress = useCallback((expenseId: string) => {
+    console.log('Edit expense pressed:', expenseId);
+    console.log('Available expenses:', allExpenses.map(e => e.id));
+    console.log('Is loading:', isLoading);
+    
     if (onEditExpense) {
       onEditExpense(expenseId);
     } else {
-      console.log('Edit expense pressed:', expenseId);
+      // If still loading or no expenses, set pending edit
+      if (isLoading || allExpenses.length === 0) {
+        console.log('Expenses still loading, setting pending edit:', expenseId);
+        setPendingEditId(expenseId);
+        return;
+      }
+      
+      const expense = allExpenses.find(e => e.id === expenseId);
+      console.log('Found expense:', expense);
+      if (expense) {
+        console.log('Setting editing expense and opening modal');
+        setEditingExpense(expense);
+        setAddEditModalVisible(true);
+        console.log('Modal should be visible now, editingExpense:', expense);
+      } else {
+        console.log('Expense not found!');
+      }
     }
-  }, [onEditExpense]);
+  }, [onEditExpense, allExpenses, isLoading]);
 
   const handleSortToggle = useCallback(() => {
     handleSortChange(sortBy === 'date-desc' ? 'date-asc' : 'date-desc');
   }, [sortBy, handleSortChange]);
 
+  const handleFormSubmit = useCallback(async (data: FormData) => {
+    console.log('Form submitted:', data);
+    console.log('Editing expense ID:', editingExpense?.id);
+    const result = await handleExpenseSubmit(data);
+    
+    console.log('Form submission result:', result);
+    if (result.success) {
+      setAddEditModalVisible(false);
+      setEditingExpense(null);
+      // Manually refetch the data to ensure UI updates
+      refetch();
+    }
+  }, [editingExpense, handleExpenseSubmit, refetch]);
+
+  const handleFormCancel = useCallback(() => {
+    setAddEditModalVisible(false);
+    setEditingExpense(null);
+  }, []);
+
   const handleDeleteExpense = useCallback((expense: Expense) => {
+    console.log('Delete expense pressed:', expense.id);
     setExpenseToDelete(expense);
     setDeleteModalVisible(true);
   }, []);
@@ -95,13 +182,17 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
     if (!expenseToDelete) return;
 
     try {
+      console.log('Deleting expense:', expenseToDelete.id);
       await deleteExpense(expenseToDelete.id).unwrap();
+      console.log('Expense deleted successfully');
       setDeleteModalVisible(false);
       setExpenseToDelete(null);
+      // Manually refetch the data to ensure UI updates
+      refetch();
     } catch (error) {
       console.error('Failed to delete expense:', error);
     }
-  }, [expenseToDelete, deleteExpense]);
+  }, [expenseToDelete, deleteExpense, refetch]);
 
   const cancelDelete = useCallback(() => {
     setDeleteModalVisible(false);
@@ -211,8 +302,17 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
       <View style={[styles.fabContainer, { backgroundColor: theme.colors.background }]}>
         <Button
           title="+ Add Expense"
-          onPress={handleAddExpense}
+          onPress={handleAddExpensePress}
           style={[styles.fab, { backgroundColor: theme.colors.primary }]}
+        />
+        <Button
+          title="Test Modal"
+          onPress={() => {
+            console.log('Test modal button pressed');
+            setAddEditModalVisible(true);
+            setEditingExpense(null);
+          }}
+          style={[styles.fab, { backgroundColor: theme.colors.secondary, marginTop: 10 }]}
         />
       </View>
 
@@ -223,6 +323,30 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
         onCancel={cancelDelete}
         isLoading={isDeleting}
       />
+
+      <Modal
+        visible={addEditModalVisible}
+        animationType="slide"
+        transparent={false}
+        onRequestClose={handleFormCancel}
+      >
+        {console.log('Modal rendering - visible:', addEditModalVisible, 'Editing expense:', editingExpense)}
+        <ScreenContainer>
+          <ExpenseForm
+            onSubmit={handleFormSubmit}
+            onCancel={handleFormCancel}
+            submitButtonTitle={editingExpense ? "Update Expense" : "Add Expense"}
+            isLoading={isSubmitting}
+            initialData={editingExpense ? {
+              description: editingExpense.description,
+              amount: editingExpense.amount.toString(),
+              category: editingExpense.category,
+              date: editingExpense.date,
+              notes: editingExpense.notes || '',
+            } : undefined}
+          />
+        </ScreenContainer>
+      </Modal>
     </ScreenContainer>
   );
 }

@@ -49,16 +49,26 @@ export function ExpenseCard({ expense, onPress, onLongPress }: ExpenseCardProps)
   };
 
   const handleLongPress = () => {
+    console.log('Long press detected on expense:', expense.id);
     HapticFeedback.warning();
     onLongPress?.();
   };
 
-  const CardComponent = onPress ? TouchableOpacity : View;
+  const handlePress = () => {
+    console.log('Press detected on expense:', expense.id);
+    console.log('onPress function exists:', !!onPress);
+    if (onPress) {
+      console.log('Calling onPress function');
+      onPress();
+    } else {
+      console.log('No onPress function provided');
+    }
+  };
 
   return (
-    <CardComponent 
+    <TouchableOpacity 
       style={cardStyle} 
-      onPress={onPress} 
+      onPress={handlePress} 
       onLongPress={handleLongPress}
       accessibilityRole="button"
       accessibilityLabel={`Expense: ${expense.description}, ${formatAmount(expense.amount)}, ${formatCategory(expense.category)}, ${formatDate(expense.date)}`}
@@ -86,6 +96,6 @@ export function ExpenseCard({ expense, onPress, onLongPress }: ExpenseCardProps)
               </Text>
             </View>
           </View>
-    </CardComponent>
+    </TouchableOpacity>
   );
 }
