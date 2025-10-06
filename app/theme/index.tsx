@@ -4,6 +4,7 @@ import { lightTheme, AppTheme } from './light';
 import { darkTheme } from './dark';
 import { AsyncStorageClient } from '../services/storage/asyncStorageClient';
 import { STORAGE_KEYS } from '../services/storage/keys';
+import { logger } from '../utils/logger';
 
 type ThemeMode = 'light' | 'dark' | 'system';
 
@@ -29,7 +30,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
           setThemeModeState(savedTheme);
         }
       } catch (error) {
-        console.error('Failed to load theme preference:', error);
+        logger.error('Failed to load theme preference', error as Error);
       }
     };
     loadThemePreference();
@@ -41,7 +42,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     try {
       await AsyncStorageClient.set(STORAGE_KEYS.THEME, mode);
     } catch (error) {
-      console.error('Failed to save theme preference:', error);
+      logger.error('Failed to save theme preference', error as Error, { mode });
     }
   };
 
