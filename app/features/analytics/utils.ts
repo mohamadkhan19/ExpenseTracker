@@ -55,7 +55,7 @@ export const calculateMonthlyTrends = (expenses: Expense[]): MonthlyTrend[] => {
     return {
       month: monthKey,
       year: date.getFullYear(),
-      monthName: date.toLocaleDateString('en-US', { month: 'long' }),
+      monthName: date.toLocaleDateString('en-US', { month: 'short' }),
       totalAmount,
       expenseCount: monthExpenses.length,
       averageAmount: monthExpenses.length > 0 ? totalAmount / monthExpenses.length : 0,
@@ -69,7 +69,8 @@ export const calculateSpendingPatterns = (expenses: Expense[]): SpendingPattern[
   const dayMap = new Map<string, { amount: number; count: number }>();
   
   expenses.forEach(expense => {
-    const dayOfWeek = new Date(expense.date).toLocaleDateString('en-US', { weekday: 'long' });
+    const date = new Date(expense.date);
+    const dayOfWeek = date.toLocaleDateString('en-US', { weekday: 'long' });
     const existing = dayMap.get(dayOfWeek) || { amount: 0, count: 0 };
     dayMap.set(dayOfWeek, {
       amount: existing.amount + expense.amount,
