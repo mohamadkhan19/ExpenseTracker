@@ -6,6 +6,7 @@ import { Button } from '../../ui/atoms/Button';
 import { Input } from '../../ui/atoms/Input';
 import { LimitCard } from '../../ui/molecules/LimitCard';
 import { ChartContainer } from '../../ui/charts/ChartContainer';
+import { CategoryDropdown } from '../../ui/molecules/CategoryDropdown';
 import { useTheme } from '../../theme';
 import { useSpendingLimits } from '../../features/limits/hooks/useSpendingLimits';
 import { SpendingLimit, LimitPeriod, ExpenseCategory } from '../../features/limits/types';
@@ -26,7 +27,6 @@ export default function LimitsScreen() {
     createLimit,
     updateLimit,
     deleteLimit,
-    toggleLimitActive,
     unreadAlertsCount,
     criticalAlerts,
   } = useSpendingLimits();
@@ -42,13 +42,12 @@ export default function LimitsScreen() {
 
   const categoryOptions: { label: string; value: Category | 'overall' }[] = [
     { label: 'Overall Budget', value: 'overall' },
-    { label: 'Food & Dining', value: 'food' },
-    { label: 'Transportation', value: 'transportation' },
-    { label: 'Shopping', value: 'shopping' },
+    { label: 'Food', value: 'food' },
+    { label: 'Transport', value: 'transport' },
     { label: 'Entertainment', value: 'entertainment' },
-    { label: 'Bills & Utilities', value: 'bills' },
-    { label: 'Healthcare', value: 'healthcare' },
-    { label: 'Travel', value: 'travel' },
+    { label: 'Shopping', value: 'shopping' },
+    { label: 'Utilities', value: 'utilities' },
+    { label: 'Health', value: 'health' },
     { label: 'Education', value: 'education' },
     { label: 'Other', value: 'other' },
   ];
@@ -212,22 +211,10 @@ export default function LimitsScreen() {
               <Text variant="sm" color="subtext">Total Limits</Text>
             </View>
             <View style={styles.analyticsItem}>
-              <Text variant="lg" weight="bold" color="text">
-                {analytics.activeLimits}
-              </Text>
-              <Text variant="sm" color="subtext">Active</Text>
-            </View>
-            <View style={styles.analyticsItem}>
               <Text variant="lg" weight="bold" color="error">
                 {analytics.exceededLimits}
               </Text>
               <Text variant="sm" color="subtext">Exceeded</Text>
-            </View>
-            <View style={styles.analyticsItem}>
-              <Text variant="lg" weight="bold" color="warning">
-                {analytics.approachingLimits}
-              </Text>
-              <Text variant="sm" color="subtext">Near Limit</Text>
             </View>
           </View>
         </ChartContainer>
@@ -244,18 +231,13 @@ export default function LimitsScreen() {
                 <Text variant="sm" weight="medium" color="text" style={styles.label}>
                   Category
                 </Text>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoryScroll}>
-                  {categoryOptions.map((option) => (
-                    <Button
-                      key={option.value}
-                      title={option.label}
-                      variant={formData.category === option.value ? 'primary' : 'outline'}
-                      size="sm"
-                      onPress={() => setFormData(prev => ({ ...prev, category: option.value }))}
-                      style={styles.categoryButton}
-                    />
-                  ))}
-                </ScrollView>
+                <CategoryDropdown
+                  selectedCategory={formData.category === 'overall' ? 'all' : formData.category as Category}
+                  onCategorySelect={(category) => {
+                    const selectedValue = category === 'all' ? 'overall' : category;
+                    setFormData(prev => ({ ...prev, category: selectedValue as Category | 'overall' }));
+                  }}
+                />
                 {formErrors.category && (
                   <Text variant="xs" color="error" style={styles.errorText}>
                     {formErrors.category}
@@ -338,7 +320,6 @@ export default function LimitsScreen() {
             status={limitStatuses.find(s => s.limitId === limit.id)}
             onEdit={handleEdit}
             onDelete={handleDelete}
-            onToggle={toggleLimitActive}
             showActions={true}
           />
         ))}
@@ -406,13 +387,6 @@ const styles = StyleSheet.create({
   },
   label: {
     marginBottom: 8,
-  },
-  categoryScroll: {
-    flexDirection: 'row',
-  },
-  categoryButton: {
-    marginRight: 8,
-    minWidth: 80,
   },
   periodScroll: {
     flexDirection: 'row',

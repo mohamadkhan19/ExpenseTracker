@@ -12,7 +12,6 @@ interface LimitCardProps {
   status?: LimitStatus;
   onEdit?: (limit: SpendingLimit) => void;
   onDelete?: (limitId: string) => void;
-  onToggle?: (limitId: string) => void;
   showActions?: boolean;
 }
 
@@ -21,7 +20,6 @@ export function LimitCard({
   status,
   onEdit,
   onDelete,
-  onToggle,
   showActions = true,
 }: LimitCardProps) {
   const { theme } = useTheme();
@@ -124,14 +122,6 @@ export function LimitCard({
           />
           
           <Button
-            title={limit.isActive ? 'Disable' : 'Enable'}
-            variant="secondary"
-            size="sm"
-            onPress={() => onToggle?.(limit.id)}
-            style={styles.actionButton}
-          />
-          
-          <Button
             title="Delete"
             variant="outline"
             size="sm"
@@ -146,11 +136,6 @@ export function LimitCard({
         <Text variant="xs" color="subtext">
           Created {new Date(limit.createdAt).toLocaleDateString()}
         </Text>
-        {!limit.isActive && (
-          <Text variant="xs" color="warning" style={styles.inactiveText}>
-            • Inactive
-          </Text>
-        )}
       </View>
     </View>
   );
