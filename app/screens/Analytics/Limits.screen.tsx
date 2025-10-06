@@ -20,7 +20,6 @@ export default function LimitsScreen() {
     limits,
     limitStatuses,
     alerts,
-    suggestions,
     analytics,
     isLoading,
     error,
@@ -344,35 +343,6 @@ export default function LimitsScreen() {
           />
         ))}
 
-        {/* Suggestions */}
-        {suggestions.length > 0 && (
-          <ChartContainer
-            title="Suggestions"
-            subtitle="Based on your spending patterns"
-          >
-            {suggestions.slice(0, 3).map((suggestion) => (
-              <View key={suggestion.category} style={styles.suggestionItem}>
-                <View style={styles.suggestionLeft}>
-                  <Text variant="md" weight="medium" color="text">
-                    {suggestion.category.charAt(0).toUpperCase() + suggestion.category.slice(1)}
-                  </Text>
-                  <Text variant="sm" color="subtext">
-                    {suggestion.reasoning}
-                  </Text>
-                </View>
-                <View style={styles.suggestionRight}>
-                  <Text variant="sm" weight="semibold" color="text">
-                    ${suggestion.suggestedAmount.toFixed(2)}
-                  </Text>
-                  <Text variant="xs" color="subtext">
-                    {suggestion.suggestedPeriod}
-                  </Text>
-                </View>
-              </View>
-            ))}
-          </ChartContainer>
-        )}
-
         {/* Bottom padding for tab bar */}
         <View style={styles.bottomPadding} />
       </ScrollView>
@@ -467,20 +437,6 @@ const styles = StyleSheet.create({
   },
   addButton: {
     marginBottom: 8,
-  },
-  suggestionItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(0,0,0,0.05)',
-  },
-  suggestionLeft: {
-    flex: 1,
-  },
-  suggestionRight: {
-    alignItems: 'flex-end',
   },
   bottomPadding: {
     height: 100,
