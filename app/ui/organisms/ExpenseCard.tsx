@@ -4,6 +4,7 @@ import { useTheme } from '../../theme';
 import { Text } from '../atoms/Text';
 import { Expense } from '../../features/expenses/types';
 import { HapticFeedback } from '../../utils/haptic';
+import { logger } from '../../utils/logger';
 
 interface ExpenseCardProps {
   expense: Expense;
@@ -49,19 +50,19 @@ export function ExpenseCard({ expense, onPress, onLongPress }: ExpenseCardProps)
   };
 
   const handleLongPress = () => {
-    console.log('Long press detected on expense:', expense.id);
+    logger.debug('Long press detected on expense', { expenseId: expense.id });
     HapticFeedback.warning();
     onLongPress?.();
   };
 
   const handlePress = () => {
-    console.log('Press detected on expense:', expense.id);
-    console.log('onPress function exists:', !!onPress);
+    logger.debug('Press detected on expense', { expenseId: expense.id });
+    logger.debug('onPress function exists', { hasOnPress: !!onPress });
     if (onPress) {
-      console.log('Calling onPress function');
+      logger.debug('Calling onPress function', { expenseId: expense.id });
       onPress();
     } else {
-      console.log('No onPress function provided');
+      logger.debug('No onPress function provided', { expenseId: expense.id });
     }
   };
 

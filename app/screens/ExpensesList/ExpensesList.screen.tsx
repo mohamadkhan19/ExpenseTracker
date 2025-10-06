@@ -17,6 +17,7 @@ import { Expense, ExpenseCategory } from '../../features/expenses/types';
 import { useTheme } from '../../theme';
 import { FormData } from '../../lib/validation';
 import { useExpenseEdit } from '../ExpenseEdit/useExpenseEdit.hook';
+import { logger } from '../../utils/logger';
 
 const ExpenseItem = memo(({ expense, onPress, onLongPress }: { expense: Expense; onPress?: () => void; onLongPress?: () => void }) => (
   <ExpenseCard expense={expense} onPress={onPress} onLongPress={onLongPress} />
@@ -59,33 +60,33 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
 
   // Debug modal state changes
   useEffect(() => {
-    console.log('Modal state changed - visible:', addEditModalVisible, 'editing:', editingExpense?.id);
+    logger.debug('Modal state changed', { visible: addEditModalVisible, editing: editingExpense?.id });
   }, [addEditModalVisible, editingExpense]);
 
   // Debug app initialization and reset state
   useEffect(() => {
-    console.log('App initialized - expenses count:', allExpenses.length);
-    console.log('Modal state on init - visible:', addEditModalVisible, 'editing:', editingExpense?.id);
+    logger.info('App initialized', { expensesCount: allExpenses.length });
+    logger.debug('Modal state on init', { visible: addEditModalVisible, editing: editingExpense?.id });
     
     // Reset modal state on app initialization to ensure clean state
     setAddEditModalVisible(false);
     setEditingExpense(null);
     setPendingEditId(null);
-    console.log('Modal state reset on app init');
+    logger.debug('Modal state reset on app init');
   }, []); // Run once on mount
 
   // Handle pending edit when expenses load
   useEffect(() => {
     if (pendingEditId && allExpenses.length > 0 && !isLoading) {
-      console.log('Processing pending edit for:', pendingEditId);
+      logger.info('Processing pending edit', { expenseId: pendingEditId });
       const expense = allExpenses.find(e => e.id === pendingEditId);
       if (expense) {
-        console.log('Found pending expense:', expense);
+        logger.info('Found pending expense', { expenseId: expense.id, description: expense.description });
         setEditingExpense(expense);
         setAddEditModalVisible(true);
         setPendingEditId(null);
       } else {
-        console.log('Pending expense not found');
+        logger.warn('Pending expense not found', { expenseId: pendingEditId });
         setPendingEditId(null);
       }
     }
@@ -111,40 +112,40 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
   }, []);
 
   const handleAddExpensePress = useCallback(() => {
-    console.log('Add expense button pressed');
+    logger.debug('Add expense button pressed');
     if (onAddExpense) {
       onAddExpense();
     } else {
       setEditingExpense(null);
       setAddEditModalVisible(true);
-      console.log('Add modal should be visible now');
+      logger.debug('Add modal should be visible now');
     }
   }, [onAddExpense]);
 
   const handleEditExpensePress = useCallback((expenseId: string) => {
-    console.log('Edit expense pressed:', expenseId);
-    console.log('Available expenses:', allExpenses.map(e => e.id));
-    console.log('Is loading:', isLoading);
+    logger.debug('Edit expense pressed', { expenseId });
+    logger.debug('Available expenses', { expenseIds: allExpenses.map(e => e.id) });
+    logger.debug('Is loading', { isLoading });
     
     if (onEditExpense) {
       onEditExpense(expenseId);
     } else {
       // If still loading or no expenses, set pending edit
       if (isLoading || allExpenses.length === 0) {
-        console.log('Expenses still loading, setting pending edit:', expenseId);
+        logger.info('Expenses still loading, setting pending edit', { expenseId });
         setPendingEditId(expenseId);
         return;
       }
       
       const expense = allExpenses.find(e => e.id === expenseId);
-      console.log('Found expense:', expense);
+      logger.debug('Found expense', { expense: expense ? { id: expense.id, description: expense.description } : null });
       if (expense) {
-        console.log('Setting editing expense and opening modal');
+        logger.info('Setting editing expense and opening modal', { expenseId: expense.id });
         setEditingExpense(expense);
         setAddEditModalVisible(true);
-        console.log('Modal should be visible now, editingExpense:', expense);
+        logger.debug('Modal should be visible now', { editingExpense: expense });
       } else {
-        console.log('Expense not found!');
+        logger.warn('Expense not found', { expenseId });
       }
     }
   }, [onEditExpense, allExpenses, isLoading]);
@@ -154,11 +155,11 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
   }, [sortBy, handleSortChange]);
 
   const handleFormSubmit = useCallback(async (data: FormData) => {
-    console.log('Form submitted:', data);
-    console.log('Editing expense ID:', editingExpense?.id);
+    logger.info('Form submitted', { data: { description: data.description, amount: data.amount, category: data.category } });
+    logger.debug('Editing expense ID', { expenseId: editingExpense?.id });
     const result = await handleExpenseSubmit(data);
     
-    console.log('Form submission result:', result);
+    logger.info('Form submission result', { success: result.success, error: result.error });
     if (result.success) {
       setAddEditModalVisible(false);
       setEditingExpense(null);
@@ -173,7 +174,7 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
   }, []);
 
   const handleDeleteExpense = useCallback((expense: Expense) => {
-    console.log('Delete expense pressed:', expense.id);
+    logger.info('Delete expense pressed', { expenseId: expense.id, description: expense.description });
     setExpenseToDelete(expense);
     setDeleteModalVisible(true);
   }, []);
@@ -182,15 +183,15 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
     if (!expenseToDelete) return;
 
     try {
-      console.log('Deleting expense:', expenseToDelete.id);
+      logger.info('Deleting expense', { expenseId: expenseToDelete.id });
       await deleteExpense(expenseToDelete.id).unwrap();
-      console.log('Expense deleted successfully');
+      logger.info('Expense deleted successfully', { expenseId: expenseToDelete.id });
       setDeleteModalVisible(false);
       setExpenseToDelete(null);
       // Manually refetch the data to ensure UI updates
       refetch();
     } catch (error) {
-      console.error('Failed to delete expense:', error);
+      logger.error('Failed to delete expense', error as Error, { expenseId: expenseToDelete.id });
     }
   }, [expenseToDelete, deleteExpense, refetch]);
 
@@ -308,7 +309,7 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
         <Button
           title="Test Modal"
           onPress={() => {
-            console.log('Test modal button pressed');
+            logger.debug('Test modal button pressed');
             setAddEditModalVisible(true);
             setEditingExpense(null);
           }}
@@ -330,7 +331,7 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
         transparent={false}
         onRequestClose={handleFormCancel}
       >
-        {console.log('Modal rendering - visible:', addEditModalVisible, 'Editing expense:', editingExpense)}
+        {logger.debug('Modal rendering', { visible: addEditModalVisible, editing: editingExpense?.id })}
         <ScreenContainer>
           <ExpenseForm
             onSubmit={handleFormSubmit}

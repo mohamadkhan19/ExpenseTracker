@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import { useCreateExpenseMutation, useUpdateExpenseMutation } from '../../store/api/expenses.api';
 import { FormData, parseFormData } from '../../lib/validation';
+import { logger } from '../../utils/logger';
 
 export function useExpenseEdit(expenseId?: string) {
   const [createExpense, { isLoading: isCreating }] = useCreateExpenseMutation();
@@ -13,15 +14,19 @@ export function useExpenseEdit(expenseId?: string) {
       const expenseData = parseFormData(data);
       
       if (expenseId) {
+        logger.debug('Updating expense', { expenseId, data: expenseData });
         await updateExpense({ id: expenseId, ...expenseData }).unwrap();
+        logger.info('Expense updated successfully', { expenseId });
       } else {
+        logger.debug('Creating new expense', { data: expenseData });
         await createExpense(expenseData).unwrap();
+        logger.info('Expense created successfully');
       }
       
       onSuccess?.();
       return { success: true };
     } catch (error) {
-      console.error('Failed to save expense:', error);
+      logger.error('Failed to save expense', error as Error, { expenseId, data });
       return { success: false, error: 'Failed to save expense. Please try again.' };
     }
   }, [expenseId, createExpense, updateExpense]);

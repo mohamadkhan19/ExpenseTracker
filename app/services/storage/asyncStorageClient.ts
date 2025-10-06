@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { logger } from '../../utils/logger';
 
 export class AsyncStorageClient {
   static async get<T>(key: string): Promise<T | null> {
@@ -6,7 +7,7 @@ export class AsyncStorageClient {
       const value = await AsyncStorage.getItem(key);
       return value ? JSON.parse(value) : null;
     } catch (error) {
-      console.error(`Error getting ${key} from AsyncStorage:`, error);
+      logger.error(`Error getting ${key} from AsyncStorage`, error as Error, { key });
       return null;
     }
   }
@@ -16,7 +17,7 @@ export class AsyncStorageClient {
       await AsyncStorage.setItem(key, JSON.stringify(value));
       return true;
     } catch (error) {
-      console.error(`Error setting ${key} to AsyncStorage:`, error);
+      logger.error(`Error setting ${key} to AsyncStorage`, error as Error, { key });
       return false;
     }
   }
@@ -26,7 +27,7 @@ export class AsyncStorageClient {
       await AsyncStorage.removeItem(key);
       return true;
     } catch (error) {
-      console.error(`Error removing ${key} from AsyncStorage:`, error);
+      logger.error(`Error removing ${key} from AsyncStorage`, error as Error, { key });
       return false;
     }
   }
@@ -36,7 +37,7 @@ export class AsyncStorageClient {
       await AsyncStorage.clear();
       return true;
     } catch (error) {
-      console.error('Error clearing AsyncStorage:', error);
+      logger.error('Error clearing AsyncStorage', error as Error);
       return false;
     }
   }
