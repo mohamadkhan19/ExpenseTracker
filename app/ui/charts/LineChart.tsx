@@ -63,7 +63,7 @@ export function LineChart({
 
   // Create polyline path
   const pathData = points.map((point, index) => 
-    `${index === 0 ? 'M' : 'L'} ${point.x.toFixed(2)} ${point.y.toFixed(2)}`
+    `${index === 0 ? 'M' : 'L'} ${Math.round(point.x)} ${Math.round(point.y)}`
   ).join(' ');
 
   // Grid lines
@@ -91,7 +91,7 @@ export function LineChart({
         {showGrid && gridLines.map((line, index) => (
           <G key={index}>
             <Polyline
-              points={`${padding},${line.y.toFixed(2)} ${width - padding},${line.y.toFixed(2)}`}
+              points={`${padding},${Math.round(line.y)} ${width - padding},${Math.round(line.y)}`}
               stroke={theme.colors.border}
               strokeWidth={1}
               strokeDasharray="2,2"
@@ -122,8 +122,8 @@ export function LineChart({
         {showDots && points.map((point, index) => (
           <Circle
             key={index}
-            cx={point.x.toFixed(2)}
-            cy={point.y.toFixed(2)}
+            cx={Math.round(point.x)}
+            cy={Math.round(point.y)}
             r={4}
             fill={data.datasets[0].color || theme.colors.primary}
             stroke={theme.colors.background}
@@ -137,7 +137,7 @@ export function LineChart({
           return (
             <SvgText
               key={index}
-              x={x.toFixed(2)}
+              x={Math.round(x)}
               y={height - padding + 16}
               fontSize={12}
               fill={theme.colors.subtext}
