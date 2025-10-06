@@ -266,6 +266,15 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
           onPress={handleAddExpensePress}
           style={[styles.fab, { backgroundColor: theme.colors.primary }]}
         />
+        <Button
+          title="Test Modal"
+          onPress={() => {
+            console.log('Test modal button pressed');
+            setAddEditModalVisible(true);
+            setEditingExpense(null);
+          }}
+          style={[styles.fab, { backgroundColor: theme.colors.secondary, marginTop: 10 }]}
+        />
       </View>
 
       <DeleteConfirmationModal
@@ -276,29 +285,31 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
         isLoading={isDeleting}
       />
 
-      <Modal
-        visible={addEditModalVisible}
-        animationType="slide"
-        transparent={false}
-        onRequestClose={handleFormCancel}
-      >
-        {console.log('Modal visible:', addEditModalVisible, 'Editing expense:', editingExpense)}
-        <ScreenContainer>
-          <ExpenseForm
-            onSubmit={handleFormSubmit}
-            onCancel={handleFormCancel}
-            submitButtonTitle={editingExpense ? "Update Expense" : "Add Expense"}
-            isLoading={isAdding || isEditing}
-            initialData={editingExpense ? {
-              description: editingExpense.description,
-              amount: editingExpense.amount.toString(),
-              category: editingExpense.category,
-              date: editingExpense.date,
-              notes: editingExpense.notes || '',
-            } : undefined}
-          />
-        </ScreenContainer>
-      </Modal>
+      {addEditModalVisible && (
+        <Modal
+          visible={addEditModalVisible}
+          animationType="slide"
+          transparent={false}
+          onRequestClose={handleFormCancel}
+        >
+          {console.log('Modal rendering - visible:', addEditModalVisible, 'Editing expense:', editingExpense)}
+          <ScreenContainer>
+            <ExpenseForm
+              onSubmit={handleFormSubmit}
+              onCancel={handleFormCancel}
+              submitButtonTitle={editingExpense ? "Update Expense" : "Add Expense"}
+              isLoading={isAdding || isEditing}
+              initialData={editingExpense ? {
+                description: editingExpense.description,
+                amount: editingExpense.amount.toString(),
+                category: editingExpense.category,
+                date: editingExpense.date,
+                notes: editingExpense.notes || '',
+              } : undefined}
+            />
+          </ScreenContainer>
+        </Modal>
+      )}
     </ScreenContainer>
   );
 }
