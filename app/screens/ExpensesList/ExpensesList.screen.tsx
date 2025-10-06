@@ -40,6 +40,7 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
   
   const {
     expenses,
+    allExpenses,
     isLoading,
     error,
     sortBy,
@@ -93,10 +94,11 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
 
   const handleEditExpensePress = useCallback((expenseId: string) => {
     console.log('Edit expense pressed:', expenseId);
+    console.log('Available expenses:', allExpenses.map(e => e.id));
     if (onEditExpense) {
       onEditExpense(expenseId);
     } else {
-      const expense = expenses.find(e => e.id === expenseId);
+      const expense = allExpenses.find(e => e.id === expenseId);
       console.log('Found expense:', expense);
       if (expense) {
         console.log('Setting editing expense and opening modal');
@@ -107,7 +109,7 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
         console.log('Expense not found!');
       }
     }
-  }, [onEditExpense, expenses]);
+  }, [onEditExpense, allExpenses]);
 
   const handleSortToggle = useCallback(() => {
     handleSortChange(sortBy === 'date-desc' ? 'date-asc' : 'date-desc');
@@ -285,31 +287,29 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
         isLoading={isDeleting}
       />
 
-      {addEditModalVisible && (
-        <Modal
-          visible={addEditModalVisible}
-          animationType="slide"
-          transparent={false}
-          onRequestClose={handleFormCancel}
-        >
-          {console.log('Modal rendering - visible:', addEditModalVisible, 'Editing expense:', editingExpense)}
-          <ScreenContainer>
-            <ExpenseForm
-              onSubmit={handleFormSubmit}
-              onCancel={handleFormCancel}
-              submitButtonTitle={editingExpense ? "Update Expense" : "Add Expense"}
-              isLoading={isAdding || isEditing}
-              initialData={editingExpense ? {
-                description: editingExpense.description,
-                amount: editingExpense.amount.toString(),
-                category: editingExpense.category,
-                date: editingExpense.date,
-                notes: editingExpense.notes || '',
-              } : undefined}
-            />
-          </ScreenContainer>
-        </Modal>
-      )}
+      <Modal
+        visible={addEditModalVisible}
+        animationType="slide"
+        transparent={false}
+        onRequestClose={handleFormCancel}
+      >
+        {console.log('Modal rendering - visible:', addEditModalVisible, 'Editing expense:', editingExpense)}
+        <ScreenContainer>
+          <ExpenseForm
+            onSubmit={handleFormSubmit}
+            onCancel={handleFormCancel}
+            submitButtonTitle={editingExpense ? "Update Expense" : "Add Expense"}
+            isLoading={isAdding || isEditing}
+            initialData={editingExpense ? {
+              description: editingExpense.description,
+              amount: editingExpense.amount.toString(),
+              category: editingExpense.category,
+              date: editingExpense.date,
+              notes: editingExpense.notes || '',
+            } : undefined}
+          />
+        </ScreenContainer>
+      </Modal>
     </ScreenContainer>
   );
 }
