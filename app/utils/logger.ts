@@ -65,9 +65,12 @@ class Logger {
       
       // Clean up Metro bundler path parameters
       const cleanPath = filePath.split('&')[0]; // Remove everything after first &
-      const fileName = cleanPath.split('/').pop()?.replace('.tsx', '').replace('.ts', '') || 'unknown';
+      const fileName = cleanPath.split('/').pop()?.replace('.tsx', '').replace('.ts', '');
       
-      return `${fileName}:${lineNumber}`;
+      // Only return if we have a valid file name
+      if (fileName && fileName !== 'unknown') {
+        return `${fileName}:${lineNumber}`;
+      }
     }
     
     return '';
