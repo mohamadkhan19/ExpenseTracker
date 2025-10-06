@@ -84,13 +84,16 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
   }, [onAddExpense]);
 
   const handleEditExpensePress = useCallback((expenseId: string) => {
+    console.log('Edit expense pressed:', expenseId);
     if (onEditExpense) {
       onEditExpense(expenseId);
     } else {
       const expense = expenses.find(e => e.id === expenseId);
+      console.log('Found expense:', expense);
       if (expense) {
         setEditingExpense(expense);
         setAddEditModalVisible(true);
+        console.log('Modal should be visible now');
       }
     }
   }, [onEditExpense, expenses]);
@@ -100,10 +103,12 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
   }, [sortBy, handleSortChange]);
 
   const handleFormSubmit = useCallback(async (data: FormData) => {
+    console.log('Form submitted:', data);
     const result = editingExpense 
       ? await handleEditExpense(data)
       : await handleAddExpense(data);
     
+    console.log('Form submission result:', result);
     if (result.success) {
       setAddEditModalVisible(false);
       setEditingExpense(null);
@@ -116,6 +121,7 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
   }, []);
 
   const handleDeleteExpense = useCallback((expense: Expense) => {
+    console.log('Delete expense pressed:', expense.id);
     setExpenseToDelete(expense);
     setDeleteModalVisible(true);
   }, []);
@@ -259,6 +265,7 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
         presentationStyle="pageSheet"
         onRequestClose={handleFormCancel}
       >
+        {console.log('Modal visible:', addEditModalVisible, 'Editing expense:', editingExpense)}
         <ScreenContainer>
           <ExpenseForm
             onSubmit={handleFormSubmit}
