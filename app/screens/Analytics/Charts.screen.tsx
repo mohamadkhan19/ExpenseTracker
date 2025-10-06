@@ -30,20 +30,6 @@ export default function ChartsScreen() {
     updateTimeRange(selectedPeriod);
   }, [selectedPeriod, updateTimeRange]);
 
-  // Prepare chart data
-  const lineChartData = useMemo(() => {
-    if (!analyticsData?.monthlyTrends.length) return null;
-
-    return {
-      labels: analyticsData.monthlyTrends.map(trend => trend.monthName),
-      datasets: [{
-        data: analyticsData.monthlyTrends.map(trend => trend.totalAmount),
-        color: theme.colors.primary,
-        strokeWidth: 3,
-      }],
-    };
-  }, [analyticsData, theme.colors.primary]);
-
   const periodOptions: { label: string; value: TimePeriod }[] = [
     { label: 'Week', value: 'week' },
     { label: 'Month', value: 'month' },
@@ -123,42 +109,11 @@ export default function ChartsScreen() {
             </View>
             <View style={styles.statItem}>
               <Text variant="lg" weight="bold" color="text">
-                ${calculations.averagePerDay.toFixed(2)}
-              </Text>
-              <Text variant="sm" color="subtext">Daily Average</Text>
-            </View>
-            <View style={styles.statItem}>
-              <Text variant="lg" weight="bold" color="text">
                 {analyticsData?.categoryBreakdown.length || 0}
               </Text>
               <Text variant="sm" color="subtext">Categories</Text>
             </View>
-            <View style={styles.statItem}>
-              <Text variant="lg" weight="bold" color={calculations.spendingGrowth >= 0 ? 'error' : 'success'}>
-                {calculations.spendingGrowth >= 0 ? '+' : ''}{calculations.spendingGrowth.toFixed(1)}%
-              </Text>
-              <Text variant="sm" color="subtext">Growth</Text>
-            </View>
           </View>
-        </ChartContainer>
-
-        {/* Monthly Trends Line Chart */}
-        <ChartContainer
-          title="Spending Trends"
-          subtitle="Monthly spending over time"
-          emptyMessage="No spending data available for the selected period"
-        >
-          {lineChartData && (
-            <LineChart
-              data={lineChartData}
-              width={screenWidth - 64}
-              height={200}
-              showGrid={true}
-              showLabels={true}
-              strokeWidth={3}
-              showDots={true}
-            />
-          )}
         </ChartContainer>
 
         {/* Bottom padding for tab bar */}
