@@ -52,8 +52,7 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
     refetch,
   } = useExpensesList();
 
-  const { handleSubmit: handleAddExpense, isLoading: isAdding } = useExpenseEdit();
-  const { handleSubmit: handleEditExpense, isLoading: isEditing } = useExpenseEdit(editingExpense?.id);
+  const { handleSubmit: handleExpenseSubmit, isLoading: isSubmitting } = useExpenseEdit(editingExpense?.id);
 
   const [deleteExpense, { isLoading: isDeleting }] = useDeleteExpenseMutation();
 
@@ -61,6 +60,17 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
   useEffect(() => {
     console.log('Modal state changed - visible:', addEditModalVisible, 'editing:', editingExpense?.id);
   }, [addEditModalVisible, editingExpense]);
+
+  // Debug app initialization and reset state
+  useEffect(() => {
+    console.log('App initialized - expenses count:', allExpenses.length);
+    console.log('Modal state on init - visible:', addEditModalVisible, 'editing:', editingExpense?.id);
+    
+    // Reset modal state on app initialization to ensure clean state
+    setAddEditModalVisible(false);
+    setEditingExpense(null);
+    console.log('Modal state reset on app init');
+  }, []); // Run once on mount
 
   const renderExpense = useCallback(({ item }: { item: Expense }) => (
     <ExpenseItem 
@@ -117,9 +127,8 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
 
   const handleFormSubmit = useCallback(async (data: FormData) => {
     console.log('Form submitted:', data);
-    const result = editingExpense 
-      ? await handleEditExpense(data)
-      : await handleAddExpense(data);
+    console.log('Editing expense ID:', editingExpense?.id);
+    const result = await handleExpenseSubmit(data);
     
     console.log('Form submission result:', result);
     if (result.success) {
@@ -128,7 +137,7 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
       // Manually refetch the data to ensure UI updates
       refetch();
     }
-  }, [editingExpense, handleAddExpense, handleEditExpense, refetch]);
+  }, [editingExpense, handleExpenseSubmit, refetch]);
 
   const handleFormCancel = useCallback(() => {
     setAddEditModalVisible(false);
@@ -299,7 +308,7 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
             onSubmit={handleFormSubmit}
             onCancel={handleFormCancel}
             submitButtonTitle={editingExpense ? "Update Expense" : "Add Expense"}
-            isLoading={isAdding || isEditing}
+            isLoading={isSubmitting}
             initialData={editingExpense ? {
               description: editingExpense.description,
               amount: editingExpense.amount.toString(),
