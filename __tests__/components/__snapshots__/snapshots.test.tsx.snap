@@ -1,0 +1,1220 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UI Component Snapshot Tests Button should match snapshot for button with custom style 1`] = `
+<View
+  accessibilityHint="Tap to custom button"
+  accessibilityLabel="Custom Button"
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    {
+      "alignItems": "center",
+      "backgroundColor": "red",
+      "borderRadius": 6,
+      "elevation": 1,
+      "justifyContent": "center",
+      "minHeight": 44,
+      "opacity": 1,
+      "paddingHorizontal": 16,
+      "paddingVertical": 8,
+      "shadowColor": "#1A1A1A",
+      "shadowOffset": {
+        "height": 1,
+        "width": 0,
+      },
+      "shadowOpacity": 0.05,
+      "shadowRadius": 1,
+    }
+  }
+>
+  <Text
+    accessibilityRole="text"
+    style={
+      [
+        {
+          "color": "#FFFFFF",
+          "fontSize": 15,
+          "fontWeight": "500",
+        },
+        undefined,
+      ]
+    }
+  >
+    Custom Button
+  </Text>
+</View>
+`;
+
+exports[`UI Component Snapshot Tests Button should match snapshot for disabled button 1`] = `
+<View
+  accessibilityHint="Tap to disabled button"
+  accessibilityLabel="Disabled Button"
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": true,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={false}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    {
+      "alignItems": "center",
+      "backgroundColor": "#00C805",
+      "borderRadius": 6,
+      "elevation": 1,
+      "justifyContent": "center",
+      "minHeight": 44,
+      "opacity": 1,
+      "paddingHorizontal": 16,
+      "paddingVertical": 8,
+      "shadowColor": "#1A1A1A",
+      "shadowOffset": {
+        "height": 1,
+        "width": 0,
+      },
+      "shadowOpacity": 0.05,
+      "shadowRadius": 1,
+    }
+  }
+>
+  <Text
+    accessibilityRole="text"
+    style={
+      [
+        {
+          "color": "#FFFFFF",
+          "fontSize": 15,
+          "fontWeight": "500",
+        },
+        undefined,
+      ]
+    }
+  >
+    Disabled Button
+  </Text>
+</View>
+`;
+
+exports[`UI Component Snapshot Tests Button should match snapshot for large button 1`] = `
+<View
+  accessibilityHint="Tap to large button"
+  accessibilityLabel="Large Button"
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    {
+      "alignItems": "center",
+      "backgroundColor": "#00C805",
+      "borderRadius": 6,
+      "elevation": 1,
+      "justifyContent": "center",
+      "minHeight": 44,
+      "opacity": 1,
+      "paddingHorizontal": 16,
+      "paddingVertical": 8,
+      "shadowColor": "#1A1A1A",
+      "shadowOffset": {
+        "height": 1,
+        "width": 0,
+      },
+      "shadowOpacity": 0.05,
+      "shadowRadius": 1,
+    }
+  }
+>
+  <Text
+    accessibilityRole="text"
+    style={
+      [
+        {
+          "color": "#FFFFFF",
+          "fontSize": 15,
+          "fontWeight": "500",
+        },
+        undefined,
+      ]
+    }
+  >
+    Large Button
+  </Text>
+</View>
+`;
+
+exports[`UI Component Snapshot Tests Button should match snapshot for primary button 1`] = `
+<View
+  accessibilityHint="Tap to primary button"
+  accessibilityLabel="Primary Button"
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    {
+      "alignItems": "center",
+      "backgroundColor": "#00C805",
+      "borderRadius": 6,
+      "elevation": 1,
+      "justifyContent": "center",
+      "minHeight": 44,
+      "opacity": 1,
+      "paddingHorizontal": 16,
+      "paddingVertical": 8,
+      "shadowColor": "#1A1A1A",
+      "shadowOffset": {
+        "height": 1,
+        "width": 0,
+      },
+      "shadowOpacity": 0.05,
+      "shadowRadius": 1,
+    }
+  }
+>
+  <Text
+    accessibilityRole="text"
+    style={
+      [
+        {
+          "color": "#FFFFFF",
+          "fontSize": 15,
+          "fontWeight": "500",
+        },
+        undefined,
+      ]
+    }
+  >
+    Primary Button
+  </Text>
+</View>
+`;
+
+exports[`UI Component Snapshot Tests Button should match snapshot for secondary button 1`] = `
+<View
+  accessibilityHint="Tap to secondary button"
+  accessibilityLabel="Secondary Button"
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    {
+      "alignItems": "center",
+      "backgroundColor": "#F8F9FA",
+      "borderRadius": 6,
+      "elevation": 1,
+      "justifyContent": "center",
+      "minHeight": 44,
+      "opacity": 1,
+      "paddingHorizontal": 16,
+      "paddingVertical": 8,
+      "shadowColor": "#1A1A1A",
+      "shadowOffset": {
+        "height": 1,
+        "width": 0,
+      },
+      "shadowOpacity": 0.05,
+      "shadowRadius": 1,
+    }
+  }
+>
+  <Text
+    accessibilityRole="text"
+    style={
+      [
+        {
+          "color": "#1A1A1A",
+          "fontSize": 15,
+          "fontWeight": "500",
+        },
+        undefined,
+      ]
+    }
+  >
+    Secondary Button
+  </Text>
+</View>
+`;
+
+exports[`UI Component Snapshot Tests Button should match snapshot for small button 1`] = `
+<View
+  accessibilityHint="Tap to small button"
+  accessibilityLabel="Small Button"
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    {
+      "alignItems": "center",
+      "backgroundColor": "#00C805",
+      "borderRadius": 6,
+      "elevation": 1,
+      "justifyContent": "center",
+      "minHeight": 44,
+      "opacity": 1,
+      "paddingHorizontal": 16,
+      "paddingVertical": 8,
+      "shadowColor": "#1A1A1A",
+      "shadowOffset": {
+        "height": 1,
+        "width": 0,
+      },
+      "shadowOpacity": 0.05,
+      "shadowRadius": 1,
+    }
+  }
+>
+  <Text
+    accessibilityRole="text"
+    style={
+      [
+        {
+          "color": "#FFFFFF",
+          "fontSize": 15,
+          "fontWeight": "500",
+        },
+        undefined,
+      ]
+    }
+  >
+    Small Button
+  </Text>
+</View>
+`;
+
+exports[`UI Component Snapshot Tests ExpenseCard should match snapshot for basic expense card 1`] = `
+<View
+  accessibilityHint="Tap to edit expense"
+  accessibilityLabel="Expense: Coffee, $4.50, Food, Dec 31, 2022"
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "borderColor": "#E5E7EB",
+      "borderRadius": 6,
+      "borderWidth": 1,
+      "elevation": 1,
+      "marginBottom": 8,
+      "opacity": 1,
+      "padding": 12,
+      "shadowColor": "#1A1A1A",
+      "shadowOffset": {
+        "height": 1,
+        "width": 0,
+      },
+      "shadowOpacity": 0.05,
+      "shadowRadius": 1,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "flexDirection": "row",
+        "justifyContent": "space-between",
+      }
+    }
+  >
+    <View
+      style={
+        {
+          "flex": 1,
+        }
+      }
+    >
+      <Text
+        accessibilityRole="text"
+        style={
+          [
+            {
+              "color": "#1A1A1A",
+              "fontSize": 17,
+              "fontWeight": "600",
+            },
+            {
+              "color": "#EF4444",
+            },
+          ]
+        }
+      >
+        -
+        $4.50
+      </Text>
+      <Text
+        accessibilityRole="text"
+        style={
+          [
+            {
+              "color": "#6B7280",
+              "fontSize": 13,
+              "fontWeight": "400",
+            },
+            {
+              "marginTop": 4,
+            },
+          ]
+        }
+      >
+        Coffee
+      </Text>
+    </View>
+    <View
+      style={
+        {
+          "alignItems": "flex-end",
+        }
+      }
+    >
+      <Text
+        accessibilityRole="text"
+        style={
+          [
+            {
+              "color": "#6B7280",
+              "fontSize": 13,
+              "fontWeight": "500",
+            },
+            undefined,
+          ]
+        }
+      >
+        Food
+      </Text>
+      <Text
+        accessibilityRole="text"
+        style={
+          [
+            {
+              "color": "#6B7280",
+              "fontSize": 11,
+              "fontWeight": "400",
+            },
+            {
+              "marginTop": 4,
+            },
+          ]
+        }
+      >
+        Dec 31, 2022
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`UI Component Snapshot Tests ExpenseCard should match snapshot for expense card with large amount 1`] = `
+<View
+  accessibilityHint="Tap to edit expense"
+  accessibilityLabel="Expense: Coffee, $1234.56, Food, Dec 31, 2022"
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "borderColor": "#E5E7EB",
+      "borderRadius": 6,
+      "borderWidth": 1,
+      "elevation": 1,
+      "marginBottom": 8,
+      "opacity": 1,
+      "padding": 12,
+      "shadowColor": "#1A1A1A",
+      "shadowOffset": {
+        "height": 1,
+        "width": 0,
+      },
+      "shadowOpacity": 0.05,
+      "shadowRadius": 1,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "flexDirection": "row",
+        "justifyContent": "space-between",
+      }
+    }
+  >
+    <View
+      style={
+        {
+          "flex": 1,
+        }
+      }
+    >
+      <Text
+        accessibilityRole="text"
+        style={
+          [
+            {
+              "color": "#1A1A1A",
+              "fontSize": 17,
+              "fontWeight": "600",
+            },
+            {
+              "color": "#EF4444",
+            },
+          ]
+        }
+      >
+        -
+        $1234.56
+      </Text>
+      <Text
+        accessibilityRole="text"
+        style={
+          [
+            {
+              "color": "#6B7280",
+              "fontSize": 13,
+              "fontWeight": "400",
+            },
+            {
+              "marginTop": 4,
+            },
+          ]
+        }
+      >
+        Coffee
+      </Text>
+    </View>
+    <View
+      style={
+        {
+          "alignItems": "flex-end",
+        }
+      }
+    >
+      <Text
+        accessibilityRole="text"
+        style={
+          [
+            {
+              "color": "#6B7280",
+              "fontSize": 13,
+              "fontWeight": "500",
+            },
+            undefined,
+          ]
+        }
+      >
+        Food
+      </Text>
+      <Text
+        accessibilityRole="text"
+        style={
+          [
+            {
+              "color": "#6B7280",
+              "fontSize": 11,
+              "fontWeight": "400",
+            },
+            {
+              "marginTop": 4,
+            },
+          ]
+        }
+      >
+        Dec 31, 2022
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`UI Component Snapshot Tests ExpenseCard should match snapshot for expense card with long description 1`] = `
+<View
+  accessibilityHint="Tap to edit expense"
+  accessibilityLabel="Expense: This is a very long description that should test text wrapping and layout, $4.50, Food, Dec 31, 2022"
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "borderColor": "#E5E7EB",
+      "borderRadius": 6,
+      "borderWidth": 1,
+      "elevation": 1,
+      "marginBottom": 8,
+      "opacity": 1,
+      "padding": 12,
+      "shadowColor": "#1A1A1A",
+      "shadowOffset": {
+        "height": 1,
+        "width": 0,
+      },
+      "shadowOpacity": 0.05,
+      "shadowRadius": 1,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "flexDirection": "row",
+        "justifyContent": "space-between",
+      }
+    }
+  >
+    <View
+      style={
+        {
+          "flex": 1,
+        }
+      }
+    >
+      <Text
+        accessibilityRole="text"
+        style={
+          [
+            {
+              "color": "#1A1A1A",
+              "fontSize": 17,
+              "fontWeight": "600",
+            },
+            {
+              "color": "#EF4444",
+            },
+          ]
+        }
+      >
+        -
+        $4.50
+      </Text>
+      <Text
+        accessibilityRole="text"
+        style={
+          [
+            {
+              "color": "#6B7280",
+              "fontSize": 13,
+              "fontWeight": "400",
+            },
+            {
+              "marginTop": 4,
+            },
+          ]
+        }
+      >
+        This is a very long description that should test text wrapping and layout
+      </Text>
+    </View>
+    <View
+      style={
+        {
+          "alignItems": "flex-end",
+        }
+      }
+    >
+      <Text
+        accessibilityRole="text"
+        style={
+          [
+            {
+              "color": "#6B7280",
+              "fontSize": 13,
+              "fontWeight": "500",
+            },
+            undefined,
+          ]
+        }
+      >
+        Food
+      </Text>
+      <Text
+        accessibilityRole="text"
+        style={
+          [
+            {
+              "color": "#6B7280",
+              "fontSize": 11,
+              "fontWeight": "400",
+            },
+            {
+              "marginTop": 4,
+            },
+          ]
+        }
+      >
+        Dec 31, 2022
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`UI Component Snapshot Tests ExpenseCard should match snapshot for expense card with onLongPress 1`] = `
+<View
+  accessibilityHint="Tap to edit expense"
+  accessibilityLabel="Expense: Coffee, $4.50, Food, Dec 31, 2022"
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "borderColor": "#E5E7EB",
+      "borderRadius": 6,
+      "borderWidth": 1,
+      "elevation": 1,
+      "marginBottom": 8,
+      "opacity": 1,
+      "padding": 12,
+      "shadowColor": "#1A1A1A",
+      "shadowOffset": {
+        "height": 1,
+        "width": 0,
+      },
+      "shadowOpacity": 0.05,
+      "shadowRadius": 1,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "flexDirection": "row",
+        "justifyContent": "space-between",
+      }
+    }
+  >
+    <View
+      style={
+        {
+          "flex": 1,
+        }
+      }
+    >
+      <Text
+        accessibilityRole="text"
+        style={
+          [
+            {
+              "color": "#1A1A1A",
+              "fontSize": 17,
+              "fontWeight": "600",
+            },
+            {
+              "color": "#EF4444",
+            },
+          ]
+        }
+      >
+        -
+        $4.50
+      </Text>
+      <Text
+        accessibilityRole="text"
+        style={
+          [
+            {
+              "color": "#6B7280",
+              "fontSize": 13,
+              "fontWeight": "400",
+            },
+            {
+              "marginTop": 4,
+            },
+          ]
+        }
+      >
+        Coffee
+      </Text>
+    </View>
+    <View
+      style={
+        {
+          "alignItems": "flex-end",
+        }
+      }
+    >
+      <Text
+        accessibilityRole="text"
+        style={
+          [
+            {
+              "color": "#6B7280",
+              "fontSize": 13,
+              "fontWeight": "500",
+            },
+            undefined,
+          ]
+        }
+      >
+        Food
+      </Text>
+      <Text
+        accessibilityRole="text"
+        style={
+          [
+            {
+              "color": "#6B7280",
+              "fontSize": 11,
+              "fontWeight": "400",
+            },
+            {
+              "marginTop": 4,
+            },
+          ]
+        }
+      >
+        Dec 31, 2022
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`UI Component Snapshot Tests Input should match snapshot for basic input 1`] = `
+<View>
+  <TextInput
+    accessibilityHint="Enter text"
+    accessibilityLabel="Text input"
+    accessibilityRole="text"
+    onChangeText={[MockFunction]}
+    placeholder="Enter text"
+    placeholderTextColor="#6B7280"
+    style={
+      [
+        {
+          "backgroundColor": "#F8F9FA",
+          "borderColor": "#E5E7EB",
+          "borderRadius": 6,
+          "borderWidth": 1,
+          "color": "#1A1A1A",
+          "fontSize": 15,
+          "minHeight": 44,
+          "paddingHorizontal": 12,
+          "paddingVertical": 8,
+        },
+        undefined,
+      ]
+    }
+    value=""
+  />
+</View>
+`;
+
+exports[`UI Component Snapshot Tests Input should match snapshot for disabled input 1`] = `
+<View>
+  <TextInput
+    accessibilityHint="Enter text"
+    accessibilityLabel="Text input"
+    accessibilityRole="text"
+    disabled={true}
+    onChangeText={[MockFunction]}
+    placeholder="Enter text"
+    placeholderTextColor="#6B7280"
+    style={
+      [
+        {
+          "backgroundColor": "#F8F9FA",
+          "borderColor": "#E5E7EB",
+          "borderRadius": 6,
+          "borderWidth": 1,
+          "color": "#1A1A1A",
+          "fontSize": 15,
+          "minHeight": 44,
+          "paddingHorizontal": 12,
+          "paddingVertical": 8,
+        },
+        undefined,
+      ]
+    }
+    value=""
+  />
+</View>
+`;
+
+exports[`UI Component Snapshot Tests Input should match snapshot for input with error 1`] = `
+<View>
+  <TextInput
+    accessibilityHint="Error: This field is required"
+    accessibilityLabel="Text input"
+    accessibilityRole="text"
+    onChangeText={[MockFunction]}
+    placeholder="Enter text"
+    placeholderTextColor="#6B7280"
+    style={
+      [
+        {
+          "backgroundColor": "#F8F9FA",
+          "borderColor": "#EF4444",
+          "borderRadius": 6,
+          "borderWidth": 1,
+          "color": "#1A1A1A",
+          "fontSize": 15,
+          "minHeight": 44,
+          "paddingHorizontal": 12,
+          "paddingVertical": 8,
+        },
+        undefined,
+      ]
+    }
+    value=""
+  />
+  <Text
+    accessibilityRole="text"
+    style={
+      [
+        {
+          "color": "#EF4444",
+          "fontSize": 11,
+          "fontWeight": "400",
+        },
+        {
+          "marginTop": 4,
+        },
+      ]
+    }
+  >
+    This field is required
+  </Text>
+</View>
+`;
+
+exports[`UI Component Snapshot Tests Input should match snapshot for input with value 1`] = `
+<View>
+  <TextInput
+    accessibilityHint="Enter text"
+    accessibilityLabel="Text input"
+    accessibilityRole="text"
+    onChangeText={[MockFunction]}
+    placeholder="Enter text"
+    placeholderTextColor="#6B7280"
+    style={
+      [
+        {
+          "backgroundColor": "#F8F9FA",
+          "borderColor": "#E5E7EB",
+          "borderRadius": 6,
+          "borderWidth": 1,
+          "color": "#1A1A1A",
+          "fontSize": 15,
+          "minHeight": 44,
+          "paddingHorizontal": 12,
+          "paddingVertical": 8,
+        },
+        undefined,
+      ]
+    }
+    value="Some text"
+  />
+</View>
+`;
+
+exports[`UI Component Snapshot Tests Input should match snapshot for multiline input 1`] = `
+<View>
+  <TextInput
+    accessibilityHint="Enter text"
+    accessibilityLabel="Text input"
+    accessibilityRole="text"
+    multiline={true}
+    numberOfLines={3}
+    onChangeText={[MockFunction]}
+    placeholder="Enter description"
+    placeholderTextColor="#6B7280"
+    style={
+      [
+        {
+          "backgroundColor": "#F8F9FA",
+          "borderColor": "#E5E7EB",
+          "borderRadius": 6,
+          "borderWidth": 1,
+          "color": "#1A1A1A",
+          "fontSize": 15,
+          "minHeight": 44,
+          "paddingHorizontal": 12,
+          "paddingVertical": 8,
+        },
+        undefined,
+      ]
+    }
+    value=""
+  />
+</View>
+`;
+
+exports[`UI Component Snapshot Tests Input should match snapshot for numeric input 1`] = `
+<View>
+  <TextInput
+    accessibilityHint="Enter text"
+    accessibilityLabel="Text input"
+    accessibilityRole="text"
+    keyboardType="numeric"
+    onChangeText={[MockFunction]}
+    placeholder="Enter amount"
+    placeholderTextColor="#6B7280"
+    style={
+      [
+        {
+          "backgroundColor": "#F8F9FA",
+          "borderColor": "#E5E7EB",
+          "borderRadius": 6,
+          "borderWidth": 1,
+          "color": "#1A1A1A",
+          "fontSize": 15,
+          "minHeight": 44,
+          "paddingHorizontal": 12,
+          "paddingVertical": 8,
+        },
+        undefined,
+      ]
+    }
+    value=""
+  />
+</View>
+`;
