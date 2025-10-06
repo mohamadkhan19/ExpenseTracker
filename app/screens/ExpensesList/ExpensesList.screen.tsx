@@ -37,6 +37,7 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
   const [tapCount, setTapCount] = useState(0);
   const [addEditModalVisible, setAddEditModalVisible] = useState(false);
   const [editingExpense, setEditingExpense] = useState<Expense | null>(null);
+  const [pendingEditId, setPendingEditId] = useState<string | null>(null);
   
   const {
     expenses,
@@ -69,8 +70,26 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
     // Reset modal state on app initialization to ensure clean state
     setAddEditModalVisible(false);
     setEditingExpense(null);
+    setPendingEditId(null);
     console.log('Modal state reset on app init');
   }, []); // Run once on mount
+
+  // Handle pending edit when expenses load
+  useEffect(() => {
+    if (pendingEditId && allExpenses.length > 0 && !isLoading) {
+      console.log('Processing pending edit for:', pendingEditId);
+      const expense = allExpenses.find(e => e.id === pendingEditId);
+      if (expense) {
+        console.log('Found pending expense:', expense);
+        setEditingExpense(expense);
+        setAddEditModalVisible(true);
+        setPendingEditId(null);
+      } else {
+        console.log('Pending expense not found');
+        setPendingEditId(null);
+      }
+    }
+  }, [pendingEditId, allExpenses, isLoading]);
 
   const renderExpense = useCallback(({ item }: { item: Expense }) => (
     <ExpenseItem 
@@ -105,9 +124,18 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
   const handleEditExpensePress = useCallback((expenseId: string) => {
     console.log('Edit expense pressed:', expenseId);
     console.log('Available expenses:', allExpenses.map(e => e.id));
+    console.log('Is loading:', isLoading);
+    
     if (onEditExpense) {
       onEditExpense(expenseId);
     } else {
+      // If still loading or no expenses, set pending edit
+      if (isLoading || allExpenses.length === 0) {
+        console.log('Expenses still loading, setting pending edit:', expenseId);
+        setPendingEditId(expenseId);
+        return;
+      }
+      
       const expense = allExpenses.find(e => e.id === expenseId);
       console.log('Found expense:', expense);
       if (expense) {
@@ -119,7 +147,7 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
         console.log('Expense not found!');
       }
     }
-  }, [onEditExpense, allExpenses]);
+  }, [onEditExpense, allExpenses, isLoading]);
 
   const handleSortToggle = useCallback(() => {
     handleSortChange(sortBy === 'date-desc' ? 'date-asc' : 'date-desc');
