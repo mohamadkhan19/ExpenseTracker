@@ -1,5 +1,7 @@
 import React, { memo, useMemo, useCallback, useState } from 'react';
 import { FlatList, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { ExpensesStackParamList } from '../../navigation/types';
 import { ScreenContainer } from '../../ui/primitives/ScreenContainer';
 import { ExpenseCard } from '../../ui/organisms/ExpenseCard';
 import { Text } from '../../ui/atoms/Text';
@@ -28,6 +30,7 @@ interface ExpensesListScreenProps {
 
 export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesListScreenProps) {
   const { theme } = useTheme();
+  const navigation = useNavigation<ExpensesStackParamList>();
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [expenseToDelete, setExpenseToDelete] = useState<Expense | null>(null);
   const [developerScreenVisible, setDeveloperScreenVisible] = useState(false);
@@ -70,17 +73,19 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
     if (onAddExpense) {
       onAddExpense();
     } else {
-      console.log('Add expense pressed');
+      // Navigate to AddExpense screen using React Navigation
+      navigation.navigate('AddExpense');
     }
-  }, [onAddExpense]);
+  }, [onAddExpense, navigation]);
 
   const handleEditExpense = useCallback((expenseId: string) => {
     if (onEditExpense) {
       onEditExpense(expenseId);
     } else {
-      console.log('Edit expense pressed:', expenseId);
+      // Navigate to EditExpense screen using React Navigation
+      navigation.navigate('EditExpense', { id: expenseId });
     }
-  }, [onEditExpense]);
+  }, [onEditExpense, navigation]);
 
   const handleSortToggle = useCallback(() => {
     handleSortChange(sortBy === 'date-desc' ? 'date-asc' : 'date-desc');

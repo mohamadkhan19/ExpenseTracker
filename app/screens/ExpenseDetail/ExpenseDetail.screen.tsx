@@ -1,10 +1,12 @@
 import React, { useCallback } from 'react';
 import { Alert } from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { ScreenContainer } from '../../ui/primitives/ScreenContainer';
 import { ExpenseForm } from '../../ui/organisms/ExpenseForm';
 import { useGetExpenseByIdQuery } from '../../store/api/expenses.api';
 import { useExpenseEdit } from '../ExpenseEdit/useExpenseEdit.hook';
 import { FormData, formatDateForInput } from '../../lib/validation';
+import { ExpensesStackParamList } from '../../navigation/types';
 
 interface EditExpenseScreenProps {
   expenseId: string;
@@ -13,20 +15,32 @@ interface EditExpenseScreenProps {
 }
 
 export function EditExpenseScreen({ expenseId, onSuccess, onCancel }: EditExpenseScreenProps) {
-  const { data: expense, isLoading: isLoadingExpense } = useGetExpenseByIdQuery(expenseId);
-  const { handleSubmit, isLoading } = useExpenseEdit(expenseId);
+  const navigation = useNavigation<ExpensesStackParamList>();
+  const route = useRoute();
+  
+  // Get expenseId from route params if not provided as prop
+  const actualExpenseId = expenseId || (route.params as any)?.id;
+  
+  const { data: expense, isLoading: isLoadingExpense } = useGetExpenseByIdQuery(actualExpenseId);
+  const { handleSubmit, isLoading } = useExpenseEdit(actualExpenseId);
 
   const handleFormSubmit = useCallback(async (data: FormData) => {
     const result = await handleSubmit(data, onSuccess);
     
     if (result.success) {
       Alert.alert('Success', 'Expense updated successfully!', [
-        { text: 'OK', onPress: onSuccess }
+        { text: 'OK', onPress: () => {
+          if (onSuccess) {
+            onSuccess();
+          } else {
+            navigation.goBack();
+          }
+        }}
       ]);
     } else {
       Alert.alert('Error', result.error || 'Failed to update expense. Please try again.');
     }
-  }, [handleSubmit, onSuccess]);
+  }, [handleSubmit, onSuccess, navigation]);
 
   const handleCancel = useCallback(() => {
     if (onCancel) {
@@ -37,11 +51,11 @@ export function EditExpenseScreen({ expenseId, onSuccess, onCancel }: EditExpens
         'Are you sure you want to cancel? Your changes will be lost.',
         [
           { text: 'Keep Editing', style: 'cancel' },
-          { text: 'Cancel', style: 'destructive', onPress: () => {} }
+          { text: 'Cancel', style: 'destructive', onPress: () => navigation.goBack() }
         ]
       );
     }
-  }, [onCancel]);
+  }, [onCancel, navigation]);
 
   if (isLoadingExpense) {
     return (
