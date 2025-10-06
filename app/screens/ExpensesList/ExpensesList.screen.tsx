@@ -1,7 +1,5 @@
 import React, { memo, useMemo, useCallback, useState } from 'react';
-import { FlatList, View, StyleSheet, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { ExpensesStackParamList } from '../../navigation/types';
+import { FlatList, View, StyleSheet, TouchableOpacity, Modal } from 'react-native';
 import { ScreenContainer } from '../../ui/primitives/ScreenContainer';
 import { ExpenseCard } from '../../ui/organisms/ExpenseCard';
 import { Text } from '../../ui/atoms/Text';
@@ -12,10 +10,13 @@ import { EmptyState } from '../../ui/feedback/EmptyState';
 import { ErrorState } from '../../ui/feedback/ErrorState';
 import { DeleteConfirmationModal } from '../../ui/feedback/DeleteConfirmationModal';
 import { DeveloperScreen } from '../Developer/Developer.screen';
+import { ExpenseForm } from '../../ui/organisms/ExpenseForm';
 import { useExpensesList } from './useExpensesList.hook';
 import { useDeleteExpenseMutation } from '../../store/api/expenses.api';
 import { Expense, ExpenseCategory } from '../../features/expenses/types';
 import { useTheme } from '../../theme';
+import { FormData } from '../../lib/validation';
+import { useExpenseEdit } from '../ExpenseEdit/useExpenseEdit.hook';
 
 const ExpenseItem = memo(({ expense, onPress, onLongPress }: { expense: Expense; onPress?: () => void; onLongPress?: () => void }) => (
   <ExpenseCard expense={expense} onPress={onPress} onLongPress={onLongPress} />
@@ -30,11 +31,12 @@ interface ExpensesListScreenProps {
 
 export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesListScreenProps) {
   const { theme } = useTheme();
-  const navigation = useNavigation<ExpensesStackParamList>();
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [expenseToDelete, setExpenseToDelete] = useState<Expense | null>(null);
   const [developerScreenVisible, setDeveloperScreenVisible] = useState(false);
   const [tapCount, setTapCount] = useState(0);
+  const [addEditModalVisible, setAddEditModalVisible] = useState(false);
+  const [editingExpense, setEditingExpense] = useState<Expense | null>(null);
   
   const {
     expenses,
@@ -48,15 +50,18 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
     clearFilters,
   } = useExpensesList();
 
+  const { handleSubmit: handleAddExpense, isLoading: isAdding } = useExpenseEdit();
+  const { handleSubmit: handleEditExpense, isLoading: isEditing } = useExpenseEdit(editingExpense?.id);
+
   const [deleteExpense, { isLoading: isDeleting }] = useDeleteExpenseMutation();
 
   const renderExpense = useCallback(({ item }: { item: Expense }) => (
     <ExpenseItem 
       expense={item} 
-      onPress={() => handleEditExpense(item.id)}
+      onPress={() => handleEditExpensePress(item.id)}
       onLongPress={() => handleDeleteExpense(item)}
     />
-  ), [handleEditExpense, handleDeleteExpense]);
+  ), [handleEditExpensePress, handleDeleteExpense]);
 
   const keyExtractor = useCallback((item: Expense) => item.id, []);
 
@@ -69,27 +74,46 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
     window.location.reload();
   }, []);
 
-  const handleAddExpense = useCallback(() => {
+  const handleAddExpensePress = useCallback(() => {
     if (onAddExpense) {
       onAddExpense();
     } else {
-      // Navigate to AddExpense screen using React Navigation
-      navigation.navigate('AddExpense');
+      setEditingExpense(null);
+      setAddEditModalVisible(true);
     }
-  }, [onAddExpense, navigation]);
+  }, [onAddExpense]);
 
-  const handleEditExpense = useCallback((expenseId: string) => {
+  const handleEditExpensePress = useCallback((expenseId: string) => {
     if (onEditExpense) {
       onEditExpense(expenseId);
     } else {
-      // Navigate to EditExpense screen using React Navigation
-      navigation.navigate('EditExpense', { id: expenseId });
+      const expense = expenses.find(e => e.id === expenseId);
+      if (expense) {
+        setEditingExpense(expense);
+        setAddEditModalVisible(true);
+      }
     }
-  }, [onEditExpense, navigation]);
+  }, [onEditExpense, expenses]);
 
   const handleSortToggle = useCallback(() => {
     handleSortChange(sortBy === 'date-desc' ? 'date-asc' : 'date-desc');
   }, [sortBy, handleSortChange]);
+
+  const handleFormSubmit = useCallback(async (data: FormData) => {
+    const result = editingExpense 
+      ? await handleEditExpense(data)
+      : await handleAddExpense(data);
+    
+    if (result.success) {
+      setAddEditModalVisible(false);
+      setEditingExpense(null);
+    }
+  }, [editingExpense, handleAddExpense, handleEditExpense]);
+
+  const handleFormCancel = useCallback(() => {
+    setAddEditModalVisible(false);
+    setEditingExpense(null);
+  }, []);
 
   const handleDeleteExpense = useCallback((expense: Expense) => {
     setExpenseToDelete(expense);
@@ -216,7 +240,7 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
       <View style={[styles.fabContainer, { backgroundColor: theme.colors.background }]}>
         <Button
           title="+ Add Expense"
-          onPress={handleAddExpense}
+          onPress={handleAddExpensePress}
           style={[styles.fab, { backgroundColor: theme.colors.primary }]}
         />
       </View>
@@ -228,6 +252,29 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
         onCancel={cancelDelete}
         isLoading={isDeleting}
       />
+
+      <Modal
+        visible={addEditModalVisible}
+        animationType="slide"
+        presentationStyle="pageSheet"
+        onRequestClose={handleFormCancel}
+      >
+        <ScreenContainer>
+          <ExpenseForm
+            onSubmit={handleFormSubmit}
+            onCancel={handleFormCancel}
+            submitButtonTitle={editingExpense ? "Update Expense" : "Add Expense"}
+            isLoading={isAdding || isEditing}
+            initialData={editingExpense ? {
+              description: editingExpense.description,
+              amount: editingExpense.amount.toString(),
+              category: editingExpense.category,
+              date: editingExpense.date,
+              notes: editingExpense.notes || '',
+            } : undefined}
+          />
+        </ScreenContainer>
+      </Modal>
     </ScreenContainer>
   );
 }

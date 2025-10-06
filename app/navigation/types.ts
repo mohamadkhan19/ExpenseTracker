@@ -4,12 +4,6 @@ export type RootStackParamList = {
   ExpenseEdit: { id?: string } | undefined;
 };
 
-export type ExpensesStackParamList = {
-  ExpensesList: undefined;
-  AddExpense: undefined;
-  EditExpense: { id: string };
-};
-
 export type RootTabParamList = {
   Expenses: undefined;
   Charts: undefined;

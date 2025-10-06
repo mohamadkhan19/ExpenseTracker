@@ -1,28 +1,14 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '../theme';
 import ExpensesListScreen from '../screens/ExpensesList/ExpensesList.screen';
 import ChartsScreen from '../screens/Analytics/Charts.screen';
 import LimitsScreen from '../screens/Analytics/Limits.screen';
-import { AddExpenseScreen } from '../screens/ExpenseEdit/ExpenseEdit.screen';
-import { EditExpenseScreen } from '../screens/ExpenseDetail/ExpenseDetail.screen';
-import { RootTabParamList, ExpensesStackParamList } from './types';
+import { RootTabParamList } from './types';
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
-const ExpensesStack = createStackNavigator<ExpensesStackParamList>();
-
-function ExpensesStackNavigator() {
-  return (
-    <ExpensesStack.Navigator screenOptions={{ headerShown: false }}>
-      <ExpensesStack.Screen name="ExpensesList" component={ExpensesListScreen} />
-      <ExpensesStack.Screen name="AddExpense" component={AddExpenseScreen} />
-      <ExpensesStack.Screen name="EditExpense" component={EditExpenseScreen} />
-    </ExpensesStack.Navigator>
-  );
-}
 
 export default function TabNavigator() {
   const { theme } = useTheme();
@@ -59,7 +45,7 @@ export default function TabNavigator() {
     >
       <Tab.Screen
         name="Expenses"
-        component={ExpensesStackNavigator}
+        component={ExpensesListScreen}
         options={{
           title: 'Expenses',
           headerShown: false,
