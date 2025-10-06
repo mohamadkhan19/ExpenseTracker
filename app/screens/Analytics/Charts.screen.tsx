@@ -44,34 +44,6 @@ export default function ChartsScreen() {
     };
   }, [analyticsData, theme.colors.primary]);
 
-  const pieChartData = useMemo(() => {
-    if (!analyticsData?.categoryBreakdown.length) return [];
-
-    return analyticsData.categoryBreakdown.map((category, index) => ({
-      name: category.category,
-      value: category.amount,
-      color: getCategoryColor(category.category, index),
-      percentage: category.percentage,
-    }));
-  }, [analyticsData]);
-
-  // Get category color
-  function getCategoryColor(category: string, index: number): string {
-    const colors = [
-      theme.colors.primary,
-      theme.colors.error,
-      theme.colors.success,
-      theme.colors.warning,
-      theme.colors.info,
-      '#FF6B6B',
-      '#4ECDC4',
-      '#45B7D1',
-      '#96CEB4',
-      '#FFEAA7',
-    ];
-    return colors[index % colors.length];
-  }
-
   const periodOptions: { label: string; value: TimePeriod }[] = [
     { label: 'Week', value: 'week' },
     { label: 'Month', value: 'month' },
@@ -185,23 +157,6 @@ export default function ChartsScreen() {
               showLabels={true}
               strokeWidth={3}
               showDots={true}
-            />
-          )}
-        </ChartContainer>
-
-        {/* Category Breakdown Pie Chart */}
-        <ChartContainer
-          title="Category Breakdown"
-          subtitle="Spending by category"
-          emptyMessage="No category data available"
-        >
-          {pieChartData.length > 0 && (
-            <PieChart
-              data={pieChartData}
-              size={Math.min(screenWidth - 64, 250)}
-              showLabels={true}
-              showLegend={true}
-              innerRadius={0.3}
             />
           )}
         </ChartContainer>
