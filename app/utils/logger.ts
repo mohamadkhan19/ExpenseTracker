@@ -57,12 +57,16 @@ class Logger {
     const callerLine = lines[3];
     if (!callerLine) return '';
     
-    // Extract file name and line number
+    // Extract file name and line number, handling Metro bundler paths
     const match = callerLine.match(/\((.+):(\d+):\d+\)/);
     if (match) {
       const filePath = match[1];
       const lineNumber = match[2];
-      const fileName = filePath.split('/').pop()?.replace('.tsx', '').replace('.ts', '') || 'unknown';
+      
+      // Clean up Metro bundler path parameters
+      const cleanPath = filePath.split('&')[0]; // Remove everything after first &
+      const fileName = cleanPath.split('/').pop()?.replace('.tsx', '').replace('.ts', '') || 'unknown';
+      
       return `${fileName}:${lineNumber}`;
     }
     
