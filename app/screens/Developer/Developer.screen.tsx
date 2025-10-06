@@ -6,8 +6,6 @@ import { Button } from '../../ui/atoms/Button';
 import { useTheme } from '../../theme';
 import { useCreateExpenseMutation } from '../../store/api/expenses.api';
 import { ExpenseCategory } from '../../features/expenses/types';
-import { useAnalytics } from '../../features/analytics/hooks/useAnalytics';
-import { useSpendingLimits } from '../../features/limits/hooks/useSpendingLimits';
 
 interface DeveloperScreenProps {
   onClose: () => void;
@@ -17,8 +15,6 @@ export function DeveloperScreen({ onClose }: DeveloperScreenProps) {
   const { theme, themeMode, toggleTheme: toggleThemeMode } = useTheme();
   const [createExpense] = useCreateExpenseMutation();
   const [isGenerating, setIsGenerating] = useState(false);
-  const { analyticsData, calculations } = useAnalytics();
-  const { limits, analytics: limitsAnalytics } = useSpendingLimits();
 
   const generateRandomExpense = async () => {
     setIsGenerating(true);
@@ -97,46 +93,6 @@ export function DeveloperScreen({ onClose }: DeveloperScreenProps) {
           <Text variant="xs" color="subtext" style={styles.helperText}>
             This will add 10 random expenses with various categories and amounts for testing purposes.
           </Text>
-        </View>
-
-        <View style={styles.section}>
-          <Text variant="lg" weight="semibold" color="text" style={styles.sectionTitle}>
-            Analytics Overview
-          </Text>
-          <View style={styles.infoCard}>
-            <Text variant="sm" color="text" style={styles.infoText}>
-              Total Spent: ${calculations.totalSpent.toFixed(2)}
-            </Text>
-            <Text variant="sm" color="text" style={styles.infoText}>
-              Daily Average: ${calculations.averagePerDay.toFixed(2)}
-            </Text>
-            <Text variant="sm" color="text" style={styles.infoText}>
-              Categories: {analyticsData?.categoryBreakdown.length || 0}
-            </Text>
-            <Text variant="sm" color="text" style={styles.infoText}>
-              Growth: {calculations.spendingGrowth >= 0 ? '+' : ''}{calculations.spendingGrowth.toFixed(1)}%
-            </Text>
-          </View>
-        </View>
-
-        <View style={styles.section}>
-          <Text variant="lg" weight="semibold" color="text" style={styles.sectionTitle}>
-            Limits Overview
-          </Text>
-          <View style={styles.infoCard}>
-            <Text variant="sm" color="text" style={styles.infoText}>
-              Total Limits: {limitsAnalytics.totalLimits}
-            </Text>
-            <Text variant="sm" color="text" style={styles.infoText}>
-              Active Limits: {limitsAnalytics.activeLimits}
-            </Text>
-            <Text variant="sm" color="text" style={styles.infoText}>
-              Exceeded: {limitsAnalytics.exceededLimits}
-            </Text>
-            <Text variant="sm" color="text" style={styles.infoText}>
-              Near Limit: {limitsAnalytics.approachingLimits}
-            </Text>
-          </View>
         </View>
 
         <View style={styles.section}>
