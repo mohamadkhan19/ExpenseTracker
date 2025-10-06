@@ -1,4 +1,4 @@
-import React, { memo, useMemo, useCallback, useState } from 'react';
+import React, { memo, useMemo, useCallback, useState, useEffect } from 'react';
 import { FlatList, View, StyleSheet, TouchableOpacity, Modal } from 'react-native';
 import { ScreenContainer } from '../../ui/primitives/ScreenContainer';
 import { ExpenseCard } from '../../ui/organisms/ExpenseCard';
@@ -56,6 +56,11 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
 
   const [deleteExpense, { isLoading: isDeleting }] = useDeleteExpenseMutation();
 
+  // Debug modal state changes
+  useEffect(() => {
+    console.log('Modal state changed - visible:', addEditModalVisible, 'editing:', editingExpense?.id);
+  }, [addEditModalVisible, editingExpense]);
+
   const renderExpense = useCallback(({ item }: { item: Expense }) => (
     <ExpenseItem 
       expense={item} 
@@ -76,11 +81,13 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
   }, []);
 
   const handleAddExpensePress = useCallback(() => {
+    console.log('Add expense button pressed');
     if (onAddExpense) {
       onAddExpense();
     } else {
       setEditingExpense(null);
       setAddEditModalVisible(true);
+      console.log('Add modal should be visible now');
     }
   }, [onAddExpense]);
 
@@ -92,9 +99,12 @@ export function ExpensesListScreen({ onAddExpense, onEditExpense }: ExpensesList
       const expense = expenses.find(e => e.id === expenseId);
       console.log('Found expense:', expense);
       if (expense) {
+        console.log('Setting editing expense and opening modal');
         setEditingExpense(expense);
         setAddEditModalVisible(true);
-        console.log('Modal should be visible now');
+        console.log('Modal should be visible now, editingExpense:', expense);
+      } else {
+        console.log('Expense not found!');
       }
     }
   }, [onEditExpense, expenses]);

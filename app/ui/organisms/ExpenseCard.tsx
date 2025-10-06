@@ -56,13 +56,17 @@ export function ExpenseCard({ expense, onPress, onLongPress }: ExpenseCardProps)
 
   const handlePress = () => {
     console.log('Press detected on expense:', expense.id);
-    onPress?.();
+    console.log('onPress function exists:', !!onPress);
+    if (onPress) {
+      console.log('Calling onPress function');
+      onPress();
+    } else {
+      console.log('No onPress function provided');
+    }
   };
 
-  const CardComponent = onPress ? TouchableOpacity : View;
-
   return (
-    <CardComponent 
+    <TouchableOpacity 
       style={cardStyle} 
       onPress={handlePress} 
       onLongPress={handleLongPress}
